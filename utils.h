@@ -1,0 +1,7 @@
+#ifndef IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_UTILS_H
+#define IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_UTILS_H
+
+void errorf(const char* fmt, ...);
+void infof (const char* fmt, ...);
+
+#endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_UTILS_H
