@@ -134,7 +134,9 @@
     <ClCompile Include="frequency_distribution.c" />
     <ClCompile Include="frequency_distribution_builder.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="pqueue.c" />
     <ClCompile Include="utils.c" />
+    <ClCompile Include="weighted_bytet_list.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="weighted_byte_list..h" />
