@@ -27,6 +27,12 @@
     <ClCompile Include="codetable_.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="frequency_distribution.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="frequency_distribution_builder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="codeword.h">
@@ -36,6 +42,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="codetable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="frequency_distribution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="frequency_distribution_bulder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pqueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="weighted_byte_list..h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

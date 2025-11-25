@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="HuffmanCompressor.c.vcxproj" />
+  <Project Path="HuffmanCompressor.c.vcxproj" Id="db9b66d6-5e9d-44bd-8ceb-9e2819cadc8a" />
 </Solution>
