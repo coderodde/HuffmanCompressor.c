@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS // Ignore _s functions
+
 #include "codetable.h"
 #include "codeword.h"
 #include "utils.h"
@@ -6,7 +8,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define _CRT_SECURE_NO_WARNINGS
 #define STRING_LENGTH (256 * (9 + 32) + 1)
 #define CODETABLE_CAPACITY 256
 
@@ -30,8 +31,8 @@ void codetable_put(CodeTable* table,
     table->size++;
 }
 
-const Codeword* const codetable_get(const CodeTable* const table,
-                                    const uint8_t byte) {
+Codeword* const codetable_get(const CodeTable* const table,
+                              const uint8_t byte) {
     ABORT_ON("codetable_get", table == NULL);
 
     return table->table[byte];
@@ -47,14 +48,18 @@ size_t codetable_size(const CodeTable* const table) {
 #define SPACE_CHARS ", "
 
 static char *const convert_byte_to_string(const uint8_t byte) {
-    char *const str = malloc(BYTE_HEX_STRING_LEN);
-    snprintf(str, BYTE_HEX_STRING_LEN, "%02X", byte);
+    char *const str = malloc(BYTE_HEX_STRING_LEN + 1);
+    ABORT_ON("convert_byte_to_string", str == NULL);
+    snprintf(str, BYTE_HEX_STRING_LEN + 1, "0x%02X", byte);
     return str;
 }
 
 char* codetable_to_string(const CodeTable* const table) {
     ABORT_ON("codetable_to_string", table == NULL);
+    ABORT_ON("codetable_to_string", codetable_size(table) == 0);
     char* str = malloc(sizeof(char) * STRING_LENGTH);
+    ABORT_ON("codetable_to_string", str == NULL);
+
     str[0] = '{';
     size_t index = 1;
     
@@ -79,13 +84,11 @@ char* codetable_to_string(const CodeTable* const table) {
         index += codeword_str_len;
         free(codeword_str);
 
-        if (byte < CODETABLE_CAPACITY - 1) {
-            strcpy(str + index, SPACE_CHARS);
-            index += strlen(SPACE_CHARS);
-        }
+        strcpy(str + index, SPACE_CHARS);
+        index += strlen(SPACE_CHARS);
     }
 
-    str[index++] = '}';
-    str[index] = '\0';
+    str[index - 2] = '}';
+    str[index - 1] = '\0';
     return str;
 }

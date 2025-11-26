@@ -6,7 +6,7 @@ int main()
 {
     CodeTable code_table;
     Codeword* cw1 = codeword_alloc(3);
-    Codeword* cw2 = codeword_alloc(4);
+    Codeword* cw2 = codeword_alloc(5);
 
     codeword_set_bit(cw1, 0);
     codeword_set_bit(cw1, 2);

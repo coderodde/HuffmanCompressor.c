@@ -19,8 +19,8 @@ void codetable_put(CodeTable *const table,
                    const uint8_t byte,
                    Codeword *const codeword);
 
-const Codeword *const codetable_get(const CodeTable *const table,
-                                    const uint8_t byte);
+Codeword *const codetable_get(const CodeTable *const table,
+                              const uint8_t byte);
 
 size_t codetable_size(const CodeTable *const table);
 

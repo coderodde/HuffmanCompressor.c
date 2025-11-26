@@ -48,7 +48,7 @@ CodeTable* codetable_builder_build(
 
         for (size_t i = 0; i < weighted_bytelist_size(left); ++i) {
             const uint8_t byte = weighted_bytelist_get(left, i);
-            Codeword* codeword = codetable_get(code_table, byte);
+            Codeword* codeword = codetable_get(code_table, (uint8_t) byte);
             ABORT_ON("codetable_builder_build", codeword == NULL);
             codeword_prepend_bit(codeword, true);
         }

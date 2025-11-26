@@ -57,6 +57,11 @@ const uint8_t weighted_bytelist_get(const WeightedByteList* const list,
     return list->data[index];
 }
 
+size_t weighted_bytelist_size(const WeightedByteList* const list) {
+    ABORT_ON("weighted_bytelist_size", list == NULL);
+    return list->size;
+}
+
 const size_t weighted_bytelist_total_weight(
             const WeightedByteList* const list) {
     ABORT_ON("weighted_bytelist_total_weight", list == NULL);
