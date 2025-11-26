@@ -130,6 +130,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="codetable_.c" />
+    <ClCompile Include="codetable_builder.c" />
     <ClCompile Include="codeword.c" />
     <ClCompile Include="frequency_distribution.c" />
     <ClCompile Include="frequency_distribution_builder.c" />
@@ -139,6 +140,7 @@
     <ClCompile Include="weighted_bytet_list.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="codetalbe_builder.h" />
     <ClInclude Include="weighted_byte_list..h" />
     <ClInclude Include="codetable.h" />
     <ClInclude Include="codeword.h" />

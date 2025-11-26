@@ -39,6 +39,9 @@
     <ClCompile Include="pqueue.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="codetable_builder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="codeword.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="weighted_byte_list..h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="codetalbe_builder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

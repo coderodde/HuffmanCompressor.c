@@ -24,4 +24,6 @@ const Codeword *const codetable_get(const CodeTable *const table,
 
 size_t codetable_size(const CodeTable *const table);
 
+char* codetable_to_string(const CodeTable* const table);
+
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_CODETABLE_H

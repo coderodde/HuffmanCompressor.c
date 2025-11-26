@@ -1,6 +1,14 @@
 #include "codetable.h"
+#include "codeword.h"
 #include "utils.h"
+#include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#define _CRT_SECURE_NO_WARNINGS
+#define STRING_LENGTH (256 * (9 + 32) + 1)
+#define CODETABLE_CAPACITY 256
 
 void codetable_init(CodeTable *const code_table) {
     ABORT_ON("codetable_init", code_table == NULL);
@@ -32,4 +40,52 @@ const Codeword* const codetable_get(const CodeTable* const table,
 size_t codetable_size(const CodeTable* const table) {
     ABORT_ON("codetable_size", table == NULL);
     return table->size;
+}
+
+#define BYTE_HEX_STRING_LEN 4
+#define BYTE_CODEWORD_SEPARATOR " = "
+#define SPACE_CHARS ", "
+
+static char *const convert_byte_to_string(const uint8_t byte) {
+    char *const str = malloc(BYTE_HEX_STRING_LEN);
+    snprintf(str, BYTE_HEX_STRING_LEN, "%02X", byte);
+    return str;
+}
+
+char* codetable_to_string(const CodeTable* const table) {
+    ABORT_ON("codetable_to_string", table == NULL);
+    char* str = malloc(sizeof(char) * STRING_LENGTH);
+    str[0] = '{';
+    size_t index = 1;
+    
+    for (size_t byte = 0; byte < CODETABLE_CAPACITY; ++byte) {
+        const Codeword *const codeword = codetable_get(table, (uint8_t) byte);
+
+        if (codeword == NULL) {
+            continue;
+        }
+
+        char* const byte_str = convert_byte_to_string((uint8_t) byte);
+        strncpy(str + index, byte_str, BYTE_HEX_STRING_LEN);
+        free(byte_str);
+        index += BYTE_HEX_STRING_LEN;
+        strcpy(str + index, BYTE_CODEWORD_SEPARATOR);
+        index += strlen(BYTE_CODEWORD_SEPARATOR);
+
+        char* codeword_str = codeword_to_string(codeword);
+        const size_t codeword_str_len = strlen(codeword_str);
+        
+        strcpy(str + index, codeword_str);
+        index += codeword_str_len;
+        free(codeword_str);
+
+        if (byte < CODETABLE_CAPACITY - 1) {
+            strcpy(str + index, SPACE_CHARS);
+            index += strlen(SPACE_CHARS);
+        }
+    }
+
+    str[index++] = '}';
+    str[index] = '\0';
+    return str;
 }

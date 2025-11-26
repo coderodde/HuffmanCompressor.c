@@ -20,5 +20,6 @@ size_t    codeword_length(const Codeword* const codeword);
 bool      codeword_get_bit(const Codeword* const codeword, const size_t index);
 void      codeword_set_bit(Codeword* const codeword, const size_t index);
 bool      codeword_equals(const Codeword* const a, const Codeword* const b);
+char*     codeword_to_string(const Codeword* const codeword);
 
 #endif 

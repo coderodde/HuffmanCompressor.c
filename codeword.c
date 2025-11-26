@@ -121,3 +121,17 @@ bool codeword_equals(const Codeword* const a, const Codeword* const b) {
 
     return true;
 }
+
+char* codeword_to_string(const Codeword* const codeword) {
+    ABORT_ON("codeword_to_string", codeword == NULL);
+    char* str = malloc(codeword->length + 1);
+    ABORT_ON("codeword_to_string", str == NULL);
+
+    for (size_t i = 0; i < codeword->length; ++i) {
+        str[codeword->length - 1 - i] = 
+            codeword_get_bit(codeword, i) ? '1' : '0';
+    }
+
+    str[codeword->length] = '\0';
+    return str;
+}
