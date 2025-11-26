@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STRING_LENGTH (256 * (9 + 32) + 1)
+#define STRING_LENGTH 5000
 #define CODETABLE_CAPACITY 256
 
 void codetable_init(CodeTable *const code_table) {
@@ -47,6 +47,9 @@ size_t codetable_size(const CodeTable* const table) {
 #define BYTE_CODEWORD_SEPARATOR " = "
 #define SPACE_CHARS ", "
 
+// Converts a byte value to its hexadecimal represesntation.
+// For example, the byte 0x42 will be converted to "0x42" 
+// and 0x5 will be converted to "0x05".
 static char *const convert_byte_to_string(const uint8_t byte) {
     char *const str = malloc(BYTE_HEX_STRING_LEN + 1);
     ABORT_ON("convert_byte_to_string", str == NULL);
@@ -67,27 +70,33 @@ char* codetable_to_string(const CodeTable* const table) {
         const Codeword *const codeword = codetable_get(table, (uint8_t) byte);
 
         if (codeword == NULL) {
+            // 'byte' is not stored in the argument code table:
             continue;
         }
 
+        // Print the byte value:
         char* const byte_str = convert_byte_to_string((uint8_t) byte);
         strncpy(str + index, byte_str, BYTE_HEX_STRING_LEN);
         free(byte_str);
         index += BYTE_HEX_STRING_LEN;
+
+        // Print the key/value separator:
         strcpy(str + index, BYTE_CODEWORD_SEPARATOR);
         index += strlen(BYTE_CODEWORD_SEPARATOR);
 
+        // Print the codeword:
         char* codeword_str = codeword_to_string(codeword);
         const size_t codeword_str_len = strlen(codeword_str);
-        
         strcpy(str + index, codeword_str);
         index += codeword_str_len;
         free(codeword_str);
 
+        // Print a comma and a space:
         strcpy(str + index, SPACE_CHARS);
         index += strlen(SPACE_CHARS);
     }
 
+    // Finish the string with an '}' and zero-terminate:
     str[index - 2] = '}';
     str[index - 1] = '\0';
     return str;
