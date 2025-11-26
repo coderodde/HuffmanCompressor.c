@@ -3,10 +3,7 @@
 #include <stdlib.h>
 
 void codetable_init(CodeTable *const code_table) {
-    if (code_table == NULL) {
-        errorf("codetable_init: code_table is NULL.");
-        abort();
-    }
+    ABORT_ON("codetable_init", code_table == NULL);
 
     code_table->size = 0;
 
@@ -18,15 +15,8 @@ void codetable_init(CodeTable *const code_table) {
 void codetable_put(CodeTable* table,
                    const uint8_t byte,
                    Codeword* const codeword) {
-    if (table == NULL) {
-        errorf("codetable_put: table == NULL.");
-        abort();
-    }
-
-    if (codeword == NULL) {
-        errorf("codetable_put: codeword == NULL.");
-        abort();
-    }
+    ABORT_ON("codetable_put", table == NULL);
+    ABORT_ON("codetable_put", codeword == NULL);
 
     table->table[byte] = codeword;
     table->size++;
@@ -34,19 +24,12 @@ void codetable_put(CodeTable* table,
 
 const Codeword* const codetable_get(const CodeTable* const table,
                                     const uint8_t byte) {
-    if (table == NULL) {
-        errorf("codetable_get: table == NULL.");
-        abort();
-    }
+    ABORT_ON("codetable_get", table == NULL);
 
     return table->table[byte];
 }
 
 size_t codetable_size(const CodeTable* const table) {
-    if (table == NULL) {
-        errorf("codetable_size: table == NULL.");
-        abort();
-    }
-
+    ABORT_ON("codetable_size", table == NULL);
     return table->size;
 }

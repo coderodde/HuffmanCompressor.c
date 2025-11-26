@@ -61,53 +61,31 @@ static void heap_sift_down(WeightedByteList** data,
 }
 
 void priority_queue_init(PriorityQueue* const pq) {
-    if (pq == NULL) {
-        errorf("priority_queue_init: pq is NULL.");
-        abort();
-    }
+    ABORT_ON("priority_queue_init", pq == NULL);
 
-    pq->data = malloc(sizeof(WeightedByteList*) * PRIORITY_QUEUE_TABLE_CAPACITY);
-    pq->size = 0;
+    *pq = (PriorityQueue) {
+        .data = malloc(sizeof(WeightedByteList*) * PRIORITY_QUEUE_TABLE_CAPACITY),
+        .size = 0,
+    };
 }
 
 void priority_queue_insert(PriorityQueue* const pq, 
                            WeightedByteList *const wbl) {
-    if (pq == NULL) {
-        errorf("priority_queue_insert: pq is NULL.");
-        abort();
-    }
-
-    if (pq->data == NULL) {
-        errorf("priority_queue_insert: pq->data is NULL.");
-        abort();
-    }
-
-    if (wbl == NULL) {
-        errorf("priority_queue_insert: wbl is NULL.");
-        abort();
-    }
-
-    if (wbl->data == NULL) {
-        errorf("priority_queue_insert: wbl->data is NULL.");
-        abort();
-    }
+    ABORT_ON("priority_queue_insert", pq == NULL);
+    ABORT_ON("priority_queue_insert", pq->data == NULL);
+    ABORT_ON("priority_queue_insert", wbl == NULL);
+    ABORT_ON("priority_queue_insert", wbl->data == NULL);
 
     const size_t index = pq->size;
+
     pq->data[index] = wbl;
     pq->size++;
     heap_sift_up(pq->data, index);
 }
 
 WeightedByteList* priority_queue_extract_min(PriorityQueue* const pq) {
-    if (pq == NULL) {
-        errorf("priority_queue_extract_min: pq is NULL.");
-        abort();
-    }
-
-    if (pq->data == NULL) {
-        errorf("priority_queue_extract_min: pq->data is NULL.");
-        abort();
-    }
+    ABORT_ON("priority_queue_extract_min", pq == NULL);
+    ABORT_ON("priority_queue_extract_min", pq->data == NULL);
 
     WeightedByteList* minimum_element = pq->data[0];
     pq->data[0] = pq->data[pq->size - 1];
@@ -117,16 +95,12 @@ WeightedByteList* priority_queue_extract_min(PriorityQueue* const pq) {
 }
 
 size_t priority_queue_size(const PriorityQueue* const pq) {
-    if (pq == NULL) {
-        errorf("priority_queue_size: pq is NULL.");
-        abort();
-    }
-
+    ABORT_ON("priority_queue_size", pq == NULL);
     return pq->size;
 }
 
 void priority_queue_free(PriorityQueue* const pq) {
-    if (pq != NULL && pq->data != NULL) {
-        free(pq->data);
-    }
+    ABORT_ON("priority_queue_free", pq == NULL);
+    ABORT_ON("priority_queue_free", pq->data == NULL);
+    free(pq->data);
 }

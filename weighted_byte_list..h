@@ -1,6 +1,7 @@
 #ifndef IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_WEIGHTED_BYTE_LIST_H
 #define IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_WEIGHTED_BYTE_LIST_H
 
+#include "utils.h"
 #include <stdint.h>
 #include <stdlib.h>
 

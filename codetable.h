@@ -2,6 +2,7 @@
 #define IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_CODETABLE_H
 
 #include "codeword.h"
+#include "utils.h"
 #include <stdint.h>
 #include <stdlib.h>
 

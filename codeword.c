@@ -45,27 +45,19 @@ Codeword* codeword_reverse(const Codeword *const pcodeword) {
 }
 
 size_t codeword_number_of_bytes(const Codeword* const codeword) {
-    if (codeword == NULL) {
-        errorf("codeword_number_of_bytes: codeword is NULL.");
-        abort();
-    }
+    ABORT_ON("codeword_number_of_bytes", codeword == NULL);
 
     return (codeword->length + 7) / BITS_IN_BYTE; // BITS_IN_BYTE = 8
 }
 
 uint8_t* codeword_get_bytes(const Codeword* const codeword) {
-    if (codeword == NULL) {
-        errorf("codeword_get_bytes: codeword is NULL.");
-        return NULL;
-    }
+    ABORT_ON("codeword_get_bytes", codeword == NULL);
 
     const size_t num_bytes = codeword_number_of_bytes(codeword);
     uint8_t* const bytes = malloc(num_bytes);
-    uint32_t bits = codeword->bits;
+    ABORT_ON("codeword_get_bytes", bytes == NULL);
 
-    if (bytes == NULL) {
-        return NULL;
-    }
+    uint32_t bits = codeword->bits;
 
     for (size_t i = 0; i < num_bytes; ++i) {
         bytes[i] = (uint8_t)(bits & LSBYTE_MASK);
@@ -76,9 +68,7 @@ uint8_t* codeword_get_bytes(const Codeword* const codeword) {
 }
 
 bool codeword_prepend_bit(Codeword* const codeword, const bool bit) {
-    if (codeword == NULL) {
-        return false;
-    }
+    ABORT_ON("codeword_prepend_bit", codeword == NULL);
 
     codeword->length++;
 
@@ -90,19 +80,12 @@ bool codeword_prepend_bit(Codeword* const codeword, const bool bit) {
 }
 
 size_t codeword_length(const Codeword* const codeword) {
-    if (codeword == NULL) {
-        errorf("codeword_length: codeword is NULL.");
-        abort();
-    }
-
+    ABORT_ON("codeword_length", codeword == NULL);
     return codeword->length;
 }
 
 bool codeword_get_bit(const Codeword* const codeword, const size_t index) {
-    if (codeword == NULL) {
-        errorf("codeword_get_bit: codeword is NULL.");
-        abort();
-    }
+    ABORT_ON("codeword_get_bit", codeword == NULL);
 
     check_index(codeword, index);
 
@@ -111,10 +94,7 @@ bool codeword_get_bit(const Codeword* const codeword, const size_t index) {
 }
 
 void codeword_set_bit(Codeword* const codeword, const size_t index) {
-    if (codeword == NULL) {
-        errorf("codeword_set_bit: codeword is NULL.");
-        abort();
-    }
+    ABORT_ON("codeword_set_bit", codeword == NULL);
 
     check_index(codeword, index);
 
@@ -123,13 +103,8 @@ void codeword_set_bit(Codeword* const codeword, const size_t index) {
 }
 
 bool codeword_equals(const Codeword* const a, const Codeword* const b) {
-    if (a == NULL || b == NULL) {
-        errorf("codeword_equals: a = %s, b = %s",
-               (a == NULL ? "NULL" : "non-NULL"), 
-               (b == NULL ? "NULL" : "non-NULL"));
-
-        abort();
-    }
+    ABORT_ON("codeword_equals", a == NULL);
+    ABORT_ON("codeword_equals", b == NULL);
 
     if (a->length != b->length) {
         return false;

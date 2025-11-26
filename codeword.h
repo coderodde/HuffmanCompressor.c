@@ -1,6 +1,7 @@
 #ifndef IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_CODEWORD_H
 #define IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_CODEWORD_H
 
+#include "utils.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
