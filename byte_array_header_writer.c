@@ -3,24 +3,111 @@
 #include "utils.h"
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 void byte_array_header_writer_init(
+    ByteArrayHeaderWriter* const writer,
     uint8_t* output_data,
     size_t output_data_length,
     size_t raw_data_length,
     CodeTable* table
 ) {
+    ABORT_ON(writer == NULL)
+    ABORT_ON(output_data == NULL)
+    ABORT_ON(table == NULL)
+    ABORT_ON(output_data_length == 0)
+    ABORT_ON(raw_data_length == 0)
 
+    *writer = (ByteArrayHeaderWriter){
+        .output_data          = output_data,
+        .output_data_length   = output_data_length,
+        .raw_data_length      = raw_data_length,
+        .data_start_bit_index = 0,
+        .table                = table,
+    };
 }
 
 size_t byte_array_header_writer_get_data_start_bit_index(
     const ByteArrayHeaderWriter* const writer
 ) {
-    return 1;
+    ABORT_ON(writer == NULL)
+    ABORT_ON(writer->output_data == NULL)
+    ABORT_ON(writer->table == NULL)
+    return writer->data_start_bit_index;
+}
+
+static void byte_array_header_writer_write_code_size(
+    ByteArrayHeaderWriter *const writer
+) 
+{
+    const size_t code_table_size = codetable_size(writer->table);
+
+    // Force little-endian encoding:
+    writer->output_data[0] = (uint8_t)(code_table_size >> 0);
+    writer->output_data[1] = (uint8_t)(code_table_size >> 8);
+    writer->output_data[2] = (uint8_t)(code_table_size >> 16);
+    writer->output_data[3] = (uint8_t)(code_table_size >> 24);
+    writer->output_data[4] = (uint8_t)(code_table_size >> 32);
+    writer->output_data[5] = (uint8_t)(code_table_size >> 40);
+    writer->output_data[6] = (uint8_t)(code_table_size >> 48);
+    writer->output_data[7] = (uint8_t)(code_table_size >> 56);
+}
+
+static void byte_array_header_writer_write_raw_data_length(
+    ByteArrayHeaderWriter* const writer
+) {
+    const size_t raw_data_length = writer->raw_data_length;
+
+    // Force little-endian encoding:
+    writer->output_data[0] = (uint8_t)(raw_data_length >> 0);
+    writer->output_data[1] = (uint8_t)(raw_data_length >> 8);
+    writer->output_data[2] = (uint8_t)(raw_data_length >> 16);
+    writer->output_data[3] = (uint8_t)(raw_data_length >> 24);
+    writer->output_data[4] = (uint8_t)(raw_data_length >> 32);
+    writer->output_data[5] = (uint8_t)(raw_data_length >> 40);
+    writer->output_data[6] = (uint8_t)(raw_data_length >> 48);
+    writer->output_data[7] = (uint8_t)(raw_data_length >> 56);
+}
+
+static void byte_array_header_writer_write_code_table(
+    ByteArrayHeaderWriter* const writer
+) { 
+    // Skip code size and raw data length:
+    size_t current_byte_index = 2 * sizeof(size_t);
+
+    for (size_t byte = 0; byte < CODE_TABLE_CAPACITY; ++byte) {
+        const Codeword *const codeword = codetable_get(writer->table, (uint8_t) byte);
+        
+        if (codeword != NULL) {
+            writer->output_data[current_byte_index++] = (uint8_t) byte;
+            writer->output_data[current_byte_index++] = (uint8_t) 
+                                                        (codeword->length);
+            
+            const size_t num_codeword_bytes = (codeword->length + 7) / 8;
+
+            uint8_t* const codeword_bytes = codeword_get_bytes(codeword);
+
+            for (size_t i = 0; i < num_codeword_bytes; ++i) {
+                writer->output_data[current_byte_index++] = codeword_bytes[i];
+            }
+
+            free(codeword_bytes);
+        }
+    }
+    
+    writer->data_start_bit_index = current_byte_index * sizeof(size_t);
 }
 
 void byte_array_header_writer_perform_write(
     ByteArrayHeaderWriter* const writer
 ) {
-
+    ABORT_ON(writer == NULL)
+    ABORT_ON(writer->output_data == NULL)
+    ABORT_ON(writer->table == NULL)
+    
+    const size_t code_table_size = codetable_size(writer->table);
+   
+    byte_array_header_writer_write_code_size(writer);
+    byte_array_header_writer_write_raw_data_length(writer);
+    byte_array_header_writer_write_code_table(writer);
 }
