@@ -5,7 +5,7 @@
 FrequencyDistribution* frequency_distribution_builder_build(const uint8_t* const data,
                                                             const size_t data_size) {
 
-    ABORT_ON("frequency_distribution_builder_build", data == NULL);
+    ABORT_ON(data == NULL);
 
     FrequencyDistribution* distribution = malloc(sizeof(FrequencyDistribution));
 

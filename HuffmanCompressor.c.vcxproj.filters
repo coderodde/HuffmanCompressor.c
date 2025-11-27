@@ -42,6 +42,9 @@
     <ClCompile Include="codetable_builder.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="byte_array_header_writer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="codeword.h">
@@ -65,7 +68,10 @@
     <ClInclude Include="weighted_byte_list..h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="codetalbe_builder.h">
+    <ClInclude Include="codetable_builder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="byte_array_header_writer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

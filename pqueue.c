@@ -61,7 +61,7 @@ static void heap_sift_down(WeightedByteList** data,
 }
 
 void priority_queue_init(PriorityQueue* const pq) {
-    ABORT_ON("priority_queue_init", pq == NULL);
+    ABORT_ON(pq == NULL);
 
     *pq = (PriorityQueue) {
         .data = malloc(sizeof(WeightedByteList*) * PRIORITY_QUEUE_TABLE_CAPACITY),
@@ -71,10 +71,10 @@ void priority_queue_init(PriorityQueue* const pq) {
 
 void priority_queue_insert(PriorityQueue* const pq, 
                            WeightedByteList *const wbl) {
-    ABORT_ON("priority_queue_insert", pq == NULL);
-    ABORT_ON("priority_queue_insert", pq->data == NULL);
-    ABORT_ON("priority_queue_insert", wbl == NULL);
-    ABORT_ON("priority_queue_insert", wbl->data == NULL);
+    ABORT_ON(pq == NULL);
+    ABORT_ON(pq->data == NULL);
+    ABORT_ON(wbl == NULL);
+    ABORT_ON(wbl->data == NULL);
 
     const size_t index = pq->size;
 
@@ -84,8 +84,8 @@ void priority_queue_insert(PriorityQueue* const pq,
 }
 
 WeightedByteList* priority_queue_extract_min(PriorityQueue* const pq) {
-    ABORT_ON("priority_queue_extract_min", pq == NULL);
-    ABORT_ON("priority_queue_extract_min", pq->data == NULL);
+    ABORT_ON(pq == NULL);
+    ABORT_ON(pq->data == NULL);
 
     WeightedByteList* minimum_element = pq->data[0];
     pq->data[0] = pq->data[pq->size - 1];
@@ -95,12 +95,12 @@ WeightedByteList* priority_queue_extract_min(PriorityQueue* const pq) {
 }
 
 size_t priority_queue_size(const PriorityQueue* const pq) {
-    ABORT_ON("priority_queue_size", pq == NULL);
+    ABORT_ON(pq == NULL);
     return pq->size;
 }
 
 void priority_queue_free(PriorityQueue* const pq) {
-    ABORT_ON("priority_queue_free", pq == NULL);
-    ABORT_ON("priority_queue_free", pq->data == NULL);
+    ABORT_ON(pq == NULL);
+    ABORT_ON(pq->data == NULL);
     free(pq->data);
 }

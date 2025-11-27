@@ -1,4 +1,4 @@
-#include "codetalbe_builder.h"
+#include "codetable_builder.h"
 #include "codeword.h"
 #include "pqueue.h"
 #include "utils.h"
@@ -7,12 +7,11 @@
 
 CodeTable* codetable_builder_build(
     const FrequencyDistribution* const frequency_distribution) {
-    ABORT_ON("codetable_builder_build", frequency_distribution == NULL);
-    ABORT_ON("codetable_builder_build", 
-        frequency_distribution_size(frequency_distribution) == 0);
+    ABORT_ON(frequency_distribution == NULL);
+    ABORT_ON(frequency_distribution_size(frequency_distribution) == 0);
 
     CodeTable* code_table = malloc(sizeof(CodeTable));
-    ABORT_ON("codetable_builder_build", code_table == NULL);
+    ABORT_ON(code_table == NULL);
     codetable_init(code_table);
 
     PriorityQueue pq;
@@ -25,7 +24,7 @@ CodeTable* codetable_builder_build(
 
         if (frequency != 0) {
             WeightedByteList* wbl = malloc(sizeof(WeightedByteList));
-            ABORT_ON("codetable_builder_build", wbl == NULL);
+            ABORT_ON(wbl == NULL);
 
             weighted_bytelist_init(wbl);
             weighted_bytelist_append(wbl, (uint8_t) byte);
@@ -34,7 +33,7 @@ CodeTable* codetable_builder_build(
 
             Codeword* codeword = codeword_alloc(0);
 
-            ABORT_ON("codetable_builder_build", codeword == NULL);
+            ABORT_ON(codeword == NULL);
 
             codetable_put(code_table, 
                           (uint8_t) byte, 
@@ -49,14 +48,14 @@ CodeTable* codetable_builder_build(
         for (size_t i = 0; i < weighted_bytelist_size(left); ++i) {
             const uint8_t byte = weighted_bytelist_get(left, i);
             Codeword* codeword = codetable_get(code_table, (uint8_t) byte);
-            ABORT_ON("codetable_builder_build", codeword == NULL);
+            ABORT_ON(codeword == NULL);
             codeword_prepend_bit(codeword, true);
         }
 
         for (size_t i = 0; i < weighted_bytelist_size(right); ++i) {
             const uint8_t byte = weighted_bytelist_get(right, i);
             Codeword* codeword = codetable_get(code_table, byte);
-            ABORT_ON("codetable_builder_build", codeword == NULL);
+            ABORT_ON(codeword == NULL);
             codeword_prepend_bit(codeword, false);
         }
 

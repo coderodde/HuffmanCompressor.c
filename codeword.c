@@ -45,17 +45,17 @@ Codeword* codeword_reverse(const Codeword *const pcodeword) {
 }
 
 size_t codeword_number_of_bytes(const Codeword* const codeword) {
-    ABORT_ON("codeword_number_of_bytes", codeword == NULL);
+    ABORT_ON(codeword == NULL);
 
     return (codeword->length + 7) / BITS_IN_BYTE; // BITS_IN_BYTE = 8
 }
 
 uint8_t* codeword_get_bytes(const Codeword* const codeword) {
-    ABORT_ON("codeword_get_bytes", codeword == NULL);
+    ABORT_ON(codeword == NULL);
 
     const size_t num_bytes = codeword_number_of_bytes(codeword);
     uint8_t* const bytes = malloc(num_bytes);
-    ABORT_ON("codeword_get_bytes", bytes == NULL);
+    ABORT_ON(bytes == NULL);
 
     uint32_t bits = codeword->bits;
 
@@ -68,7 +68,7 @@ uint8_t* codeword_get_bytes(const Codeword* const codeword) {
 }
 
 bool codeword_prepend_bit(Codeword* const codeword, const bool bit) {
-    ABORT_ON("codeword_prepend_bit", codeword == NULL);
+    ABORT_ON(codeword == NULL);
 
     codeword->length++;
 
@@ -80,12 +80,12 @@ bool codeword_prepend_bit(Codeword* const codeword, const bool bit) {
 }
 
 size_t codeword_length(const Codeword* const codeword) {
-    ABORT_ON("codeword_length", codeword == NULL);
+    ABORT_ON(codeword == NULL);
     return codeword->length;
 }
 
 bool codeword_get_bit(const Codeword* const codeword, const size_t index) {
-    ABORT_ON("codeword_get_bit", codeword == NULL);
+    ABORT_ON(codeword == NULL);
 
     check_index(codeword, index);
 
@@ -94,7 +94,7 @@ bool codeword_get_bit(const Codeword* const codeword, const size_t index) {
 }
 
 void codeword_set_bit(Codeword* const codeword, const size_t index) {
-    ABORT_ON("codeword_set_bit", codeword == NULL);
+    ABORT_ON(codeword == NULL);
 
     check_index(codeword, index);
 
@@ -103,8 +103,8 @@ void codeword_set_bit(Codeword* const codeword, const size_t index) {
 }
 
 bool codeword_equals(const Codeword* const a, const Codeword* const b) {
-    ABORT_ON("codeword_equals", a == NULL);
-    ABORT_ON("codeword_equals", b == NULL);
+    ABORT_ON(a == NULL);
+    ABORT_ON(b == NULL);
 
     if (a->length != b->length) {
         return false;
@@ -123,9 +123,9 @@ bool codeword_equals(const Codeword* const a, const Codeword* const b) {
 }
 
 char* codeword_to_string(const Codeword* const codeword) {
-    ABORT_ON("codeword_to_string", codeword == NULL);
+    ABORT_ON(codeword == NULL);
     char* str = malloc(codeword->length + 1);
-    ABORT_ON("codeword_to_string", str == NULL);
+    ABORT_ON(str == NULL);
 
     for (size_t i = 0; i < codeword->length; ++i) {
         str[codeword->length - 1 - i] = 

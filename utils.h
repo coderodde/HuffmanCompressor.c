@@ -1,10 +1,13 @@
 #ifndef IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_UTILS_H
 #define IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_UTILS_H
 
-#define ABORT_ON(func_name, expr)      \
-    if (expr) {                        \
-        errorf(#func_name ": " #expr); \
-        abort();                       \
+#define ABORT_ON(expr)                           \
+    if (expr) {                                  \
+        errorf("%s in function '%s', file '%s'", \
+               #expr,                            \
+               __FUNCTION__,                     \
+               __FILE__);                        \
+        abort();                                 \
     }                                  
 
 void errorf(const char* fmt, ...);

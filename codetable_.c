@@ -12,7 +12,7 @@
 #define CODETABLE_CAPACITY 256
 
 void codetable_init(CodeTable *const code_table) {
-    ABORT_ON("codetable_init", code_table == NULL);
+    ABORT_ON(code_table == NULL);
 
     code_table->size = 0;
 
@@ -24,8 +24,8 @@ void codetable_init(CodeTable *const code_table) {
 void codetable_put(CodeTable* table,
                    const uint8_t byte,
                    Codeword* const codeword) {
-    ABORT_ON("codetable_put", table == NULL);
-    ABORT_ON("codetable_put", codeword == NULL);
+    ABORT_ON(table == NULL);
+    ABORT_ON(codeword == NULL);
 
     table->table[byte] = codeword;
     table->size++;
@@ -33,13 +33,13 @@ void codetable_put(CodeTable* table,
 
 Codeword* const codetable_get(const CodeTable* const table,
                               const uint8_t byte) {
-    ABORT_ON("codetable_get", table == NULL);
+    ABORT_ON(table == NULL);
 
     return table->table[byte];
 }
 
 size_t codetable_size(const CodeTable* const table) {
-    ABORT_ON("codetable_size", table == NULL);
+    ABORT_ON(table == NULL);
     return table->size;
 }
 
@@ -52,16 +52,16 @@ size_t codetable_size(const CodeTable* const table) {
 // and 0x5 will be converted to "0x05".
 static char *const convert_byte_to_string(const uint8_t byte) {
     char *const str = malloc(BYTE_HEX_STRING_LEN + 1);
-    ABORT_ON("convert_byte_to_string", str == NULL);
+    ABORT_ON(str == NULL);
     snprintf(str, BYTE_HEX_STRING_LEN + 1, "0x%02X", byte);
     return str;
 }
 
 char* codetable_to_string(const CodeTable* const table) {
-    ABORT_ON("codetable_to_string", table == NULL);
-    ABORT_ON("codetable_to_string", codetable_size(table) == 0);
+    ABORT_ON(table == NULL);
+    ABORT_ON(codetable_size(table) == 0);
     char* str = malloc(sizeof(char) * STRING_LENGTH);
-    ABORT_ON("codetable_to_string", str == NULL);
+    ABORT_ON(str == NULL);
 
     str[0] = '{';
     size_t index = 1;
