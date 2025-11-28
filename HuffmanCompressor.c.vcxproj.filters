@@ -45,6 +45,9 @@
     <ClCompile Include="byte_array_header_writer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="byte_array_header_reader.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="codeword.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="byte_array_header_writer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="byte_array_header_reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

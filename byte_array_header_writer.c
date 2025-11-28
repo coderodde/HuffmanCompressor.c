@@ -43,14 +43,9 @@ static void byte_array_header_writer_write_code_size(
     const size_t code_table_size = codetable_size(writer->table);
 
     // Force little-endian encoding:
-    writer->output_data[0] = (uint8_t)(code_table_size >> 0);
-    writer->output_data[1] = (uint8_t)(code_table_size >> 8);
-    writer->output_data[2] = (uint8_t)(code_table_size >> 16);
-    writer->output_data[3] = (uint8_t)(code_table_size >> 24);
-    writer->output_data[4] = (uint8_t)(code_table_size >> 32);
-    writer->output_data[5] = (uint8_t)(code_table_size >> 40);
-    writer->output_data[6] = (uint8_t)(code_table_size >> 48);
-    writer->output_data[7] = (uint8_t)(code_table_size >> 56);
+    for (size_t i = 0; i < sizeof(size_t); ++i) {
+        writer->output_data[i] = (uint8_t) (code_table_size >> (8 * i));
+    }
 }
 
 static void byte_array_header_writer_write_raw_data_length(
@@ -59,14 +54,9 @@ static void byte_array_header_writer_write_raw_data_length(
     const size_t raw_data_length = writer->raw_data_length;
 
     // Force little-endian encoding:
-    writer->output_data[0] = (uint8_t)(raw_data_length >> 0);
-    writer->output_data[1] = (uint8_t)(raw_data_length >> 8);
-    writer->output_data[2] = (uint8_t)(raw_data_length >> 16);
-    writer->output_data[3] = (uint8_t)(raw_data_length >> 24);
-    writer->output_data[4] = (uint8_t)(raw_data_length >> 32);
-    writer->output_data[5] = (uint8_t)(raw_data_length >> 40);
-    writer->output_data[6] = (uint8_t)(raw_data_length >> 48);
-    writer->output_data[7] = (uint8_t)(raw_data_length >> 56);
+    for (size_t i = 0; i < sizeof(size_t); ++i) {
+        writer->output_data[i] = (uint8_t) (raw_data_length >> (8 * i));
+    }
 }
 
 static void byte_array_header_writer_write_code_table(
@@ -83,7 +73,7 @@ static void byte_array_header_writer_write_code_table(
             writer->output_data[current_byte_index++] = (uint8_t) 
                                                         (codeword->length);
             
-            const size_t num_codeword_bytes = (codeword->length + 7) / 8;
+            const size_t num_codeword_bytes = codeword_number_of_bytes(codeword);
 
             uint8_t* const codeword_bytes = codeword_get_bytes(codeword);
 

@@ -3,13 +3,14 @@
 
 #include <stdlib.h>
 
-#define ABORT_ON(expr)                           \
-    if (expr) {                                  \
-        errorf("%s in function '%s', file '%s'", \
-               #expr,                            \
-               __FUNCTION__,                     \
-               __FILE__);                        \
-        exit(EXIT_FAILURE);                      \
+#define ABORT_ON(expr)                                    \
+    if (expr) {                                           \
+        errorf("%s in function '%s', line %zu,file '%s'", \
+               #expr,                                     \
+               __FUNCTION__,                              \
+               __LINE__,                                  \
+               __FILE__);                                 \
+        exit(EXIT_FAILURE);                               \
     }                                  
 
 void errorf(const char* fmt, ...);
