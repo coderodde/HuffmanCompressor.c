@@ -16,7 +16,7 @@ int main()
     data[2] = 0x47;
     data[3] = 0x45;
 
-    FrequencyDistribution* fd = frequency_distribution_builder_build(data, 4);
+    FrequencyDistribution* fd = frequency_distribution_builder_build("main.c");
 
     CodeTable* ct = codetable_builder_build(fd);
 

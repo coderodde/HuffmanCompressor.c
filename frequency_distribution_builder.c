@@ -12,13 +12,15 @@
 
 // Thread chunk size in bytes, 64 KiB:
 #define CHUNK_SIZE (1024 * 64)
+
+// File read buffer size in bytes, 8 KiB:
 #define BUFFER_SIZE (1024 * 8)
 
 typedef struct ThreadArguments {
-    const uint8_t* data;
     size_t start_byte_index;
     size_t end_byte_index;
-    const char *const file_name;
+    const char* file_name;
+    FrequencyDistribution* result_distribution;
 }
 ThreadArguments;
 
@@ -26,7 +28,8 @@ ThreadArguments;
 
 DWORD WINAPI thread_function(LPVOID lpParam) {
     ThreadArguments *const args = (ThreadArguments *const) lpParam;
-    FrequencyDistribution* local_distribution = malloc(sizeof(FrequencyDistribution));
+    FrequencyDistribution* local_distribution = 
+        malloc(sizeof *local_distribution);
     
     ABORT_ON(local_distribution == NULL);
 
@@ -36,35 +39,63 @@ DWORD WINAPI thread_function(LPVOID lpParam) {
    
     ABORT_ON(file == NULL);
 
-#ifdef _WIN32
     const int res = _fseeki64(file, args->start_byte_index, SEEK_SET);
+
     ABORT_ON(res != 0)
-#else
-    
-#endif
 
     uint8_t buffer[BUFFER_SIZE];
 
-    for (size_t i = args->start_byte_index; i < args->end_byte_index; ++i) {
-        frequency_distribution_increment(local_distribution, args->data[i]);
+    const size_t number_of_write_chunks = 
+        (args->end_byte_index - args->start_byte_index + BUFFER_SIZE - 1) 
+        / BUFFER_SIZE;
+
+    for (size_t i = 0; i < number_of_write_chunks; ++i) {
+        size_t bytes_to_read = BUFFER_SIZE;
+
+        if (i == number_of_write_chunks - 1) {
+            bytes_to_read = args->end_byte_index - args->start_byte_index - i * BUFFER_SIZE;
+        }
+
+        const size_t bytes_read = fread(buffer, 
+                                        sizeof(uint8_t),
+                                        bytes_to_read,
+                                        file);
+
+        ABORT_ON(bytes_read != bytes_to_read);
+
+        for (size_t j = 0; j < bytes_read; ++j) {
+            frequency_distribution_increment(local_distribution, buffer[j]);
+        }
     }
 
-    return (DWORD)(uintptr_t)local_distribution;
+    fclose(file);
+
+    args->result_distribution = local_distribution;
+    return 0;
 }
 
 #else
 
 #endif
 
-FrequencyDistribution* frequency_distribution_builder_build(const uint8_t* const data,
-                                                            const size_t data_size) {
+static size_t file_size(const char *const file_name) {
+    FILE* file = fopen(file_name, "rb");
+    ABORT_ON(file == NULL)
+    const int res = _fseeki64(file, 0, SEEK_END);
+    ABORT_ON(res != 0)
+    const size_t size = (size_t) _ftelli64(file);
+    fclose(file);
+    return size;
+}
 
-    ABORT_ON(data == NULL)
-    ABORT_ON(data_size == 0)
-
+FrequencyDistribution* frequency_distribution_builder_build(const char *const file_name) {
+    const size_t data_size = file_size(file_name);
     const size_t number_of_chunks = (data_size + CHUNK_SIZE - 1) / CHUNK_SIZE;
+
     ThreadArguments* *const thread_arguments_array = 
         malloc(sizeof(ThreadArguments*) * number_of_chunks);
+
+    ABORT_ON(thread_arguments_array == NULL)
 
     for (size_t i = 0; i < number_of_chunks; ++i) {
         const size_t start_byte_index = i * CHUNK_SIZE;
@@ -75,11 +106,14 @@ FrequencyDistribution* frequency_distribution_builder_build(const uint8_t* const
         }
 
         ThreadArguments *const thread_arguments = 
-            malloc(sizeof(ThreadArguments));
+            malloc(sizeof *thread_arguments);
 
-        thread_arguments->data = data;
+        ABORT_ON(thread_arguments == NULL)
+
         thread_arguments->start_byte_index = start_byte_index;
         thread_arguments->end_byte_index = end_byte_index;
+        thread_arguments->file_name = file_name;
+        thread_arguments->result_distribution = NULL;
         thread_arguments_array[i] = thread_arguments;
     }
 
@@ -110,15 +144,18 @@ FrequencyDistribution* frequency_distribution_builder_build(const uint8_t* const
 #endif
 
     FrequencyDistribution* distribution = malloc(sizeof(FrequencyDistribution));
-
-    if (distribution == NULL) {
-        return NULL;
-    }
+    ABORT_ON(distribution == NULL)
 
     frequency_distribution_init(distribution);
 
-    for (size_t i = 0; i < data_size; ++i) {
-        frequency_distribution_increment(distribution, data[i]);
+    for (size_t i = 0; i < number_of_chunks; ++i) {
+        ABORT_ON(thread_arguments_array[i]->result_distribution == NULL);
+
+        FrequencyDistribution* local_distribution = 
+            thread_arguments_array[i]->result_distribution;
+
+        frequency_distribution_add(distribution, local_distribution);
+        free(thread_arguments_array[i]);
     }
 
     return distribution;
