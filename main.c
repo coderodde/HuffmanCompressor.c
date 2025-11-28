@@ -9,14 +9,11 @@
 
 int main()
 {
+    const size_t ta = get_ms();
+    FrequencyDistribution* fd = frequency_distribution_builder_build("C:\\Users\\rodio\\Documents\\WarAndPeace.html");
+    const size_t tb = get_ms();
 
-    uint8_t data[4];
-    data[0] = 0x45;
-    data[1] = 0x46;
-    data[2] = 0x47;
-    data[3] = 0x45;
-
-    FrequencyDistribution* fd = frequency_distribution_builder_build("main.c");
+    printf("Duration: %zu ms\n", tb - ta);
 
     CodeTable* ct = codetable_builder_build(fd);
 
