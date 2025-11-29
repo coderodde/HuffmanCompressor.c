@@ -61,7 +61,8 @@ static void byte_array_header_writer_write_raw_data_length(
 
 static void byte_array_header_writer_write_code_table(
     ByteArrayHeaderWriter* const writer
-) { 
+) 
+{ 
     // Skip code size and raw data length:
     size_t current_byte_index = 2 * sizeof(size_t);
 
