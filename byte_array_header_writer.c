@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+static const size_t BYTES_PER_CODEWORD_ENTRY = 6;
+
 void byte_array_header_writer_init(
     ByteArrayHeaderWriter* const writer,
     uint8_t* output_data,
@@ -18,7 +20,8 @@ void byte_array_header_writer_init(
     ABORT_ON(output_data_length == 0)
     ABORT_ON(raw_data_length == 0)
 
-    *writer = (ByteArrayHeaderWriter){
+    *writer = (ByteArrayHeaderWriter)
+    {
         .output_data          = output_data,
         .output_data_length   = output_data_length,
         .raw_data_length      = raw_data_length,
@@ -29,7 +32,8 @@ void byte_array_header_writer_init(
 
 size_t byte_array_header_writer_get_data_start_bit_index(
     const ByteArrayHeaderWriter* const writer
-) {
+) 
+{
     ABORT_ON(writer == NULL)
     ABORT_ON(writer->output_data == NULL)
     ABORT_ON(writer->table == NULL)
@@ -50,7 +54,8 @@ static void byte_array_header_writer_write_code_size(
 
 static void byte_array_header_writer_write_raw_data_length(
     ByteArrayHeaderWriter* const writer
-) {
+) 
+{
     const size_t raw_data_length = writer->raw_data_length;
 
     // Force little-endian encoding:
@@ -75,8 +80,7 @@ static void byte_array_header_writer_write_code_table(
                                                         (codeword->length);
             
             const size_t num_codeword_bytes = codeword_number_of_bytes(codeword);
-
-            uint8_t* const codeword_bytes = codeword_get_bytes(codeword);
+            uint8_t* const codeword_bytes   = codeword_get_bytes(codeword);
 
             for (size_t i = 0; i < num_codeword_bytes; ++i) {
                 writer->output_data[current_byte_index++] = codeword_bytes[i];
@@ -91,14 +95,20 @@ static void byte_array_header_writer_write_code_table(
 
 void byte_array_header_writer_perform_write(
     ByteArrayHeaderWriter* const writer
-) {
+) 
+{
     ABORT_ON(writer == NULL)
     ABORT_ON(writer->output_data == NULL)
     ABORT_ON(writer->table == NULL)
-    
-    const size_t code_table_size = codetable_size(writer->table);
    
     byte_array_header_writer_write_code_size(writer);
     byte_array_header_writer_write_raw_data_length(writer);
     byte_array_header_writer_write_code_table(writer);
+}
+
+size_t byte_array_header_writer_get_header_length(
+    const size_t code_table_size
+)
+{
+    return 2 * sizeof(size_t) + code_table_size * BYTES_PER_CODEWORD_ENTRY; 
 }

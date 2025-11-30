@@ -34,4 +34,8 @@ void byte_array_header_writer_perform_write(
     ByteArrayHeaderWriter *const writer
 );
 
+size_t byte_array_header_writer_get_header_length(
+    const size_t code_table_size
+);
+
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_BYTE_ARRAY_HEADER_WRITER_H

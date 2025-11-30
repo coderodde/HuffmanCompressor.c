@@ -8,18 +8,11 @@
 // File read buffer size in bytes, 64 KiB:
 #define BUFFER_SIZE (1024 * 64)
 
-static size_t file_size(const char *const file_name) {
+FrequencyDistribution* frequency_distribution_builder_build(const char *const file_name) {
     FILE* file = fopen(file_name, "rb");
     ABORT_ON(file == NULL)
-    const int res = _fseeki64(file, 0, SEEK_END);
-    ABORT_ON(res != 0)
-    const size_t size = (size_t) _ftelli64(file);
-    fclose(file);
-    return size;
-}
 
-FrequencyDistribution* frequency_distribution_builder_build(const char *const file_name) {
-    const size_t data_size = file_size(file_name);
+    const size_t data_size = get_file_length(file);
 
     FrequencyDistribution* distribution = malloc(sizeof *distribution);
     
@@ -27,8 +20,6 @@ FrequencyDistribution* frequency_distribution_builder_build(const char *const fi
 
     frequency_distribution_init(distribution);
 
-    FILE* file = fopen(file_name, "rb");
-    ABORT_ON(file == NULL)
     uint8_t* buffer = malloc(BUFFER_SIZE);
     ABORT_ON(buffer == NULL)
     ABORT_ON(setvbuf(file, (char*) buffer, _IOFBF, BUFFER_SIZE) != 0)

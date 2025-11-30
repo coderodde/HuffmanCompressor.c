@@ -38,6 +38,24 @@ void infof(const char* fmt, ...) {
     va_end(args);
 }
 
+size_t get_file_length(const FILE* const file) {
+    // Save current position:
+    __int64 cur = _ftelli64(file);
+
+    ABORT_ON(cur < 0);
+
+    ABORT_ON(_fseeki64(file, 0, SEEK_END) != 0);
+    
+    __int64 end = _ftelli64(file);
+
+    ABORT_ON(end < 0);
+
+    // Restore original position:
+    ABORT_ON(_fseeki64(file, cur, SEEK_SET) != 0);
+
+    return (size_t) end;
+}
+
 size_t get_ms() {
 #ifdef _WIN32
     return (size_t) GetTickCount64();
