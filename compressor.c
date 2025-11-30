@@ -11,47 +11,243 @@
 
 #define BUFFER_SIZE (1024 * 64)
 
+typedef struct BitWriter {
+    FILE* file;
+    uint8_t* buffer;
+    size_t  byte_pos;  // next free byte in buffer
+    uint8_t bit_pos;   // next free bit position in current byte [0..7]
+} 
+BitWriter;
+
+static size_t get_file_length_by_name(const char* filename) {
+    FILE* f = fopen(filename, "rb");
+    ABORT_ON(f)
+
+#if defined(_WIN32)
+    // Windows-safe: use 64-bit seek/tell
+    if (_fseeki64(f, 0, SEEK_END) != 0) {
+        fclose(f);
+        return 0;
+    }
+
+    __int64 pos = _ftelli64(f);
+
+    fclose(f);
+    
+    ABORT_ON(pos < 0)
+
+    return (size_t) pos;
+
+#else
+    // POSIX: fseeko / ftello (64-bit)
+    if (fseeko(f, 0, SEEK_END) != 0) {
+        fclose(f);
+        return 0;
+    }
+
+    off_t pos = ftello(f);
+    fclose(f);
+
+    ABORT_ON(pos < 0)
+
+    return (size_t) pos;
+#endif
+}
+
+
+static void bit_writer_init(BitWriter* bw, FILE* file) {
+    *bw = (BitWriter){
+        .file = file,
+        .byte_pos = 0,
+        .bit_pos = 0,
+        .buffer = malloc(BUFFER_SIZE),
+    };
+}
+
+static void bit_writer_free(BitWriter* bw) {
+    free(bw->buffer);
+}
+
+static void bit_writer_flush(BitWriter* bw) {
+    if (bw->byte_pos == 0) {
+        return;
+    }
+
+    size_t written = fwrite(bw->buffer, 1, bw->byte_pos, bw->file);
+    ABORT_ON(written != bw->byte_pos);
+
+    bw->byte_pos = 0;
+    bw->bit_pos = 0;
+}
+
+// Write 'nbits' least significant bits of 'code' into the stream.
+static void bit_writer_put_bits(BitWriter* bw, uint32_t code, size_t nbits) {
+    while (nbits--) {
+        // Take the next bit from MSB side or LSB side depending on your convention.
+        uint8_t bit = (code >> nbits) & 1U;
+
+        if (bw->bit_pos == 0) {
+            // Start a new byte
+            if (bw->byte_pos == BUFFER_SIZE) {
+                bit_writer_flush(bw);
+            }
+            bw->buffer[bw->byte_pos] = 0;
+        }
+
+        bw->buffer[bw->byte_pos] |= (bit << (7 - bw->bit_pos));
+        bw->bit_pos++;
+
+        if (bw->bit_pos == 8) {
+            bw->bit_pos = 0;
+            bw->byte_pos++;
+        }
+    }
+}
+
+// Pad the last byte with zeros and flush
+static void bit_writer_finish(BitWriter* bw) {
+    if (bw->bit_pos != 0) {
+        bw->byte_pos++;  // last partially filled byte is valid
+    }
+    bit_writer_flush(bw);
+}
+
+
+//typedef struct {
+//    uint32_t bits;     // code bits in some order
+//    uint8_t  bit_len;  // number of valid bits
+//} Code;
+
+//Code codetable_get(const CodeTable* ct, uint8_t symbol);
+
+
 void compress(
-    const char* const file_name
-)
+    const char* const input_file_name,
+    const char* const output_file_name)
 {
-    const FrequencyDistribution *const fd = 
-        frequency_distribution_builder_build(file_name);
+    // 1. Build frequency distribution from INPUT file:
+    const FrequencyDistribution* const fd =
+        frequency_distribution_builder_build(input_file_name);
 
-    ABORT_ON(fd == NULL)
+    ABORT_ON(fd == NULL);
 
+    // 2. Build code table:
     CodeTable* code_table = codetable_builder_build(fd);
-
-    ABORT_ON(code_table == NULL)
+    ABORT_ON(code_table == NULL);
 
     const size_t code_table_size = codetable_size(code_table);
     const size_t header_length =
         byte_array_header_writer_get_header_length(code_table_size);
 
-    FILE *const file = fopen(file_name, "wb");
+    // 3. Open OUTPUT file:
+    FILE* const out = fopen(output_file_name, "wb");
+    ABORT_ON(out == NULL);
 
-    ABORT_ON(file == NULL)
+    // Optional: stdio buffer, separate from our 64KiB bit buffer
+    ABORT_ON(setvbuf(out, NULL, _IOFBF, BUFFER_SIZE) != 0);
 
-    uint8_t* buffer = malloc(BUFFER_SIZE);
+    // 4. Prepare header
     uint8_t* header_byte_array = malloc(header_length);
+    ABORT_ON(header_byte_array == NULL);
 
-    ABORT_ON(buffer == NULL)
-    ABORT_ON(header_byte_array == NULL)
-    ABORT_ON(setvbuf(file, (char*)buffer, _IOFBF, BUFFER_SIZE) != 0)
+    const size_t raw_data_length = get_file_length_by_name(input_file_name);
 
-    ByteArrayHeaderWriter *const header_writer = malloc(sizeof *header_writer);
-
-    ABORT_ON(header_writer == NULL)
-
-    const size_t raw_data_length = get_file_length(file);
+    ByteArrayHeaderWriter* const header_writer = malloc(sizeof * header_writer);
+    ABORT_ON(header_writer == NULL);
 
     byte_array_header_writer_init(
-        header_writer, 
+        header_writer,
         header_byte_array,
-        header_length, 
-        raw_data_length, 
+        header_length,
+        raw_data_length,
         code_table
     );
 
-                                  
+    // 5. Write header in one or more chunks (here: single fwrite)
+    size_t written = fwrite(header_byte_array, 1, header_length, out);
+    ABORT_ON(written != header_length);
+
+    // 6. Now write the actual compressed codes, 64KiB at a time
+
+    FILE* const in = fopen(input_file_name, "rb");
+    ABORT_ON(in == NULL);
+
+    BitWriter bw;
+    bit_writer_init(&bw, out);
+
+    uint8_t inbuf[BUFFER_SIZE];
+
+    for (;;) {
+        size_t read = fread(inbuf, 1, sizeof inbuf, in);
+        if (read == 0) {
+            ABORT_ON(ferror(in));   // error?
+            break;                  // EOF
+        }
+
+        for (size_t i = 0; i < read; ++i) {
+            uint8_t symbol = inbuf[i];
+
+            Codeword* c = codetable_get(code_table, symbol);
+            // c.bits: the code bits
+            // c.bit_len: how many bits are valid
+
+            bit_writer_put_bits(&bw, c->bits, c->length);
+        }
+    }
+
+    bit_writer_finish(&bw);
+    bit_writer_free(&bw);
+
+    fclose(in);
+    fclose(out);
+
+    free(header_writer);
+    free(header_byte_array);
+    // also free code_table and fd if they are heap-allocated etc.
 }
+
+
+//void compress(
+//    const char* const file_name
+//)
+//{
+//    const FrequencyDistribution *const fd = 
+//        frequency_distribution_builder_build(file_name);
+//
+//    ABORT_ON(fd == NULL)
+//
+//    CodeTable* code_table = codetable_builder_build(fd);
+//
+//    ABORT_ON(code_table == NULL)
+//
+//    const size_t code_table_size = codetable_size(code_table);
+//    const size_t header_length =
+//        byte_array_header_writer_get_header_length(code_table_size);
+//
+//    FILE *const file = fopen(file_name, "wb");
+//
+//    ABORT_ON(file == NULL)
+//
+//    uint8_t* buffer = malloc(BUFFER_SIZE);
+//    uint8_t* header_byte_array = malloc(header_length);
+//
+//    ABORT_ON(buffer == NULL)
+//    ABORT_ON(header_byte_array == NULL)
+//    ABORT_ON(setvbuf(file, (char*)buffer, _IOFBF, BUFFER_SIZE) != 0)
+//
+//    ByteArrayHeaderWriter *const header_writer = malloc(sizeof *header_writer);
+//
+//    ABORT_ON(header_writer == NULL)
+//
+//    const size_t raw_data_length = get_file_length(file);
+//
+//    byte_array_header_writer_init(
+//        header_writer, 
+//        header_byte_array,
+//        header_length, 
+//        raw_data_length, 
+//        code_table
+//    );
+//
+//                                  
+//}
