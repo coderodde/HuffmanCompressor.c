@@ -31,10 +31,9 @@ void codetable_put(CodeTable* table,
     table->size++;
 }
 
-Codeword* const codetable_get(const CodeTable* const table,
-                              const uint8_t byte) {
-    ABORT_ON(table == NULL);
-
+Codeword* codetable_get(CodeTable* table,
+                        uint8_t byte) {
+    ABORT_ON(table == NULL)
     return table->table[byte];
 }
 

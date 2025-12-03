@@ -41,8 +41,11 @@ void weighted_bytelist_free(WeightedByteList* const list) {
     free(list->data);
 }
 
-const uint8_t weighted_bytelist_get(const WeightedByteList* const list,
-                                    const size_t index) {
+uint8_t weighted_bytelist_get(
+    WeightedByteList* list,
+    size_t index
+) 
+{
 
     ABORT_ON(list == NULL);
 
@@ -57,13 +60,18 @@ const uint8_t weighted_bytelist_get(const WeightedByteList* const list,
     return list->data[index];
 }
 
-size_t weighted_bytelist_size(const WeightedByteList* const list) {
+size_t weighted_bytelist_size(
+    WeightedByteList* list
+)
+{
     ABORT_ON(list == NULL);
     return list->size;
 }
 
-const size_t weighted_bytelist_total_weight(
-            const WeightedByteList* const list) {
+size_t weighted_bytelist_total_weight(
+    WeightedByteList* list
+)
+{
     ABORT_ON(list == NULL);
     return list->total_list_weight;
 }

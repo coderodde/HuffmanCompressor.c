@@ -121,6 +121,8 @@ void compress(
         code_table
     );
 
+    byte_array_header_writer_perform_write(header_writer);
+
     // 5. Write header in one or more chunks (here: single fwrite):
     size_t written = fwrite(header_byte_array, 1, header_length, out);
     ABORT_ON(written != header_length);

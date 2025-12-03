@@ -24,7 +24,7 @@
     <ClCompile Include="utils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="codetable_.c">
+    <ClCompile Include="codetable.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="frequency_distribution.c">

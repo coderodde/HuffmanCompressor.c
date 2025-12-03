@@ -150,7 +150,7 @@
     <ClCompile Include="byte_array_compressed_data_writer.c" />
     <ClCompile Include="byte_array_header_reader.c" />
     <ClCompile Include="byte_array_header_writer.c" />
-    <ClCompile Include="codetable_.c" />
+    <ClCompile Include="codetable.c" />
     <ClCompile Include="codetable_builder.c" />
     <ClCompile Include="codeword.c" />
     <ClCompile Include="compressor.c" />

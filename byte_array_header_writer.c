@@ -6,6 +6,7 @@
 #include <string.h>
 
 static const size_t BYTES_PER_CODEWORD_ENTRY = 6;
+static const size_t BITS_PER_BYTE = 8;
 
 void byte_array_header_writer_init(
     ByteArrayHeaderWriter* const writer,
@@ -28,6 +29,10 @@ void byte_array_header_writer_init(
         .data_start_bit_index = 0,
         .table                = table,
     };
+
+    memset(output_data,
+           0,
+           output_data_length);
 }
 
 size_t byte_array_header_writer_get_data_start_bit_index(
@@ -91,7 +96,7 @@ static void byte_array_header_writer_write_code_table(
         }
     }
     
-    writer->data_start_bit_index = current_byte_index * sizeof(size_t);
+    writer->data_start_bit_index = current_byte_index * BITS_PER_BYTE;
 }
 
 void byte_array_header_writer_perform_write(

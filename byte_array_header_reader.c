@@ -126,8 +126,7 @@ static CodeTable* read_code_table(
         ABORT_ON(offset + BYTES_PER_CODEWORD_ENTRY > compressed_data_length)
 
         Codeword* codeword = codeword_deserialize(
-            &compressed_data[offset],
-            BYTES_PER_CODEWORD_ENTRY
+            &compressed_data[offset]
         );
 
         ABORT_ON(codeword == NULL)

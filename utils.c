@@ -81,7 +81,7 @@ size_t get_ms() {
 #endif
 }
 
-const char* const extract_file_name_only(const char* const path_name) {
+char* extract_file_name_only(char* path_name) {
     const size_t len = strlen(path_name);
     SSIZE_T i;
 
