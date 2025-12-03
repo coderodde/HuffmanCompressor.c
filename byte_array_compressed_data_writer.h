@@ -16,17 +16,17 @@ typedef struct ByteArrayCompressedDataWriter {
 ByteArrayCompressedDataWriter;
 
 void byte_array_compressed_data_writer_init(
-    ByteArrayCompressedDataWriter *const writer,
+    ByteArrayCompressedDataWriter* writer,
     uint8_t* compressed_data,
     uint8_t* raw_data,
     size_t compressed_data_length,
     size_t raw_data_length,
     size_t starting_bit_index,
-    const CodeTable *const code_table
+    CodeTable* code_table
 );
 
 void byte_array_compressed_data_writer_write(
-    ByteArrayCompressedDataWriter *const writer
+    ByteArrayCompressedDataWriter* writer
 );
 
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_BYTE_ARRAY_COMPRESSED_DATA_WRITER_H

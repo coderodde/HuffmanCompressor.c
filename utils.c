@@ -40,7 +40,7 @@ void infof(const char* fmt, ...) {
 
 size_t get_file_length_by_name(const char *const filename) {
     FILE* f = fopen(filename, "rb");
-    ABORT_ON(f)
+    ABORT_ON(f == NULL)
 
 #if defined(_WIN32)
     // Windows-safe: use 64-bit seek/tell
@@ -94,5 +94,6 @@ const char* const extract_file_name_only(const char* const path_name) {
     }
 
     ABORT_ON(i < 0)
-        return NULL;
+    return NULL; // Make the compiler happy by returning anything.
+                 // This is an unreachable statement.
 }

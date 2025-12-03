@@ -7,13 +7,13 @@
 #define BITS_PER_BYTE 8
 
 void byte_array_compressed_data_writer_init(
-    ByteArrayCompressedDataWriter *const writer,
+    ByteArrayCompressedDataWriter* writer,
     uint8_t* compressed_data,
     uint8_t* input_data,
     size_t compressed_data_length,
     size_t input_data_length,
     size_t starting_bit_index,
-    const CodeTable* const code_table
+    CodeTable* code_table
 )
 {
     ABORT_ON(writer == NULL)

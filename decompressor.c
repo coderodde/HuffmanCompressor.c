@@ -23,19 +23,20 @@ void decompress(
         fread(header_buffer, 1, HEADER_MAX_SIZE, in);
 
     ByteArrayHeaderReader reader;
+
     byte_array_header_reader_init(&reader, 
                                   header_buffer, 
                                   HEADER_MAX_SIZE);
 
-    const CodeTable *const ct = byte_array_header_reader_get_code_table(&reader);
+    CodeTable* ct = byte_array_header_reader_get_code_table(&reader);
 
     ABORT_ON(ct == NULL)
     
     puts(codetable_to_string(ct));
 
     const size_t code_table_size = codetable_size(ct);
-    const size_t expected_header_length =
-        byte_array_header_writer_get_header_length(code_table_size);
+    size_t expected_header_length = 
+        byte_array_header_reader_get_header_length(&reader);
 
     ABORT_ON(expected_header_length != header_bytes_read)
 

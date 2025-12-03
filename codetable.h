@@ -13,17 +13,27 @@ typedef struct CodeTable {
     size_t size;
 } CodeTable;
 
-void codetable_init(CodeTable *const table);
+void codetable_init(
+    CodeTable* table
+);
 
-void codetable_put(CodeTable *const table,
-                   const uint8_t byte,
-                   Codeword *const codeword);
+void codetable_put(
+    CodeTable* table,
+    uint8_t byte,
+    Codeword* codeword
+);
 
-Codeword *const codetable_get(const CodeTable *const table,
-                              const uint8_t byte);
+Codeword* codetable_get(
+    CodeTable* table,
+    uint8_t byte
+);
 
-size_t codetable_size(const CodeTable *const table);
+size_t codetable_size(
+    CodeTable* table
+);
 
-char* codetable_to_string(const CodeTable* const table);
+char* codetable_to_string(
+    CodeTable* table
+);
 
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_CODETABLE_H

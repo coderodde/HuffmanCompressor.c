@@ -14,17 +14,21 @@ typedef struct ByteArrayHeaderReader {
 ByteArrayHeaderReader;
 
 void byte_array_header_reader_init(
-    ByteArrayHeaderReader *const reader,
-    uint8_t *const compressed_data,
-    const size_t compressed_data_length
+    ByteArrayHeaderReader* reader,
+    uint8_t* compressed_data,
+    size_t compressed_data_length
 );
 
-const CodeTable* const byte_array_header_reader_get_code_table(
-    const ByteArrayHeaderReader *const reader
+const size_t byte_array_header_reader_get_header_length(
+    ByteArrayHeaderReader* reader
+);
+
+CodeTable* byte_array_header_reader_get_code_table(
+    ByteArrayHeaderReader* reader
 );
 
 const size_t byte_array_header_reader_get_raw_data_length(
-    const ByteArrayHeaderReader *const reader
+    ByteArrayHeaderReader* reader
 );
 
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_BYTE_ARRAY_HEADER_READER_H

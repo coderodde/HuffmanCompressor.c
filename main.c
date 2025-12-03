@@ -1,5 +1,7 @@
 #include "codetable.h"
 #include "codetable_builder.h"
+#include "compressor.h"
+#include "decompressor.h"
 #include "frequency_distribution.h"
 #include "frequency_distribution_bulder.h"
 #include "utils.h"

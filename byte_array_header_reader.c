@@ -3,6 +3,8 @@
 #include "utils.h"
 #include <stdlib.h>
 
+#define BYTES_PER_CODEWORD_ENTRY 6
+
 static size_t read_raw_data_length(const uint8_t *const compressed_data);
 
 static size_t read_code_table_size(const uint8_t *const compressed_data);
@@ -38,17 +40,18 @@ void byte_array_header_reader_init(
                                          compressed_data_length);
 }
 
-const CodeTable* const byte_array_header_reader_get_code_table(
-    const ByteArrayHeaderReader* const reader
+CodeTable* byte_array_header_reader_get_code_table(
+    ByteArrayHeaderReader* reader
 )
 {
-    return NULL;
+    return reader->code_table;
 }
 
 const size_t byte_array_header_reader_get_raw_data_length(
     const ByteArrayHeaderReader* const reader
 )
 {
+    
     return 0;
 }
 
@@ -66,4 +69,13 @@ static CodeTable* read_code_table(
     const size_t compressed_data_length
 ) {
     return NULL;
+}
+
+const size_t byte_array_header_reader_get_header_length(
+    ByteArrayHeaderReader* reader
+)
+{
+    return 2 * sizeof(size_t) + 
+               codetable_size(reader->code_table) * 
+                    BYTES_PER_CODEWORD_ENTRY;
 }

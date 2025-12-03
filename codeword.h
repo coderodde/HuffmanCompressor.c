@@ -11,15 +11,47 @@ typedef struct Codeword {
     uint32_t bits;
 } Codeword;
 
-Codeword* codeword_alloc(const size_t length);
-Codeword* codeword_reverse(const Codeword *const codeword);
-size_t    codeword_number_of_bytes(const Codeword *const codeword);
-uint8_t*  codeword_get_bytes(const Codeword *const codeword);
-bool      codeword_prepend_bit(Codeword* const codeword, const bool bit);
-size_t    codeword_length(const Codeword* const codeword);
-bool      codeword_get_bit(const Codeword* const codeword, const size_t index);
-void      codeword_set_bit(Codeword* const codeword, const size_t index);
-bool      codeword_equals(const Codeword* const a, const Codeword* const b);
-char*     codeword_to_string(const Codeword* const codeword);
+Codeword* codeword_alloc(
+    size_t length
+);
+
+Codeword* codeword_reverse(
+    Codeword* codeword
+);
+
+size_t codeword_number_of_bytes(
+    Codeword* codeword
+);
+
+uint8_t* codeword_get_bytes(
+    Codeword* codeword
+);
+
+bool codeword_prepend_bit(
+    Codeword* codeword, 
+    bool bit
+);
+
+size_t codeword_length(
+    Codeword* codeword
+);
+
+bool codeword_get_bit(
+    Codeword* codeword, size_t index
+);
+
+void codeword_set_bit(
+    Codeword* codeword, 
+    size_t index
+);
+
+bool codeword_equals(
+    Codeword* a,
+    Codeword* b
+);
+
+char* codeword_to_string(
+    Codeword* codeword
+);
 
 #endif 
