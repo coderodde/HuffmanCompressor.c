@@ -22,7 +22,7 @@ void errorf(const char* fmt, ...);
 void infof (const char* fmt, ...);
 size_t get_ms();
 size_t get_number_of_cpus();
-size_t get_file_length(const FILE *const file);
+size_t get_file_length_by_name(const char* const filename);
 
 static const char* const extract_file_name_only(const char* const path_name) {
     const size_t len = strlen(path_name);

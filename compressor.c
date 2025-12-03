@@ -19,42 +19,6 @@ typedef struct BitWriter {
 } 
 BitWriter;
 
-static size_t get_file_length_by_name(const char* filename) {
-    FILE* f = fopen(filename, "rb");
-    ABORT_ON(f)
-
-#if defined(_WIN32)
-    // Windows-safe: use 64-bit seek/tell
-    if (_fseeki64(f, 0, SEEK_END) != 0) {
-        fclose(f);
-        return 0;
-    }
-
-    __int64 pos = _ftelli64(f);
-
-    fclose(f);
-    
-    ABORT_ON(pos < 0)
-
-    return (size_t) pos;
-
-#else
-    // POSIX: fseeko / ftello (64-bit)
-    if (fseeko(f, 0, SEEK_END) != 0) {
-        fclose(f);
-        return 0;
-    }
-
-    off_t pos = ftello(f);
-    fclose(f);
-
-    ABORT_ON(pos < 0)
-
-    return (size_t) pos;
-#endif
-}
-
-
 static void bit_writer_init(BitWriter* bw, FILE* file) {
     *bw = (BitWriter){
         .file = file,
@@ -163,12 +127,11 @@ void compress(
         code_table
     );
 
-    // 5. Write header in one or more chunks (here: single fwrite)
+    // 5. Write header in one or more chunks (here: single fwrite):
     size_t written = fwrite(header_byte_array, 1, header_length, out);
     ABORT_ON(written != header_length);
 
-    // 6. Now write the actual compressed codes, 64KiB at a time
-
+    // 6. Now write the actual compressed codes, 64KiB at a time:
     FILE* const in = fopen(input_file_name, "rb");
     ABORT_ON(in == NULL);
 
@@ -205,49 +168,3 @@ void compress(
     free(header_byte_array);
     // also free code_table and fd if they are heap-allocated etc.
 }
-
-
-//void compress(
-//    const char* const file_name
-//)
-//{
-//    const FrequencyDistribution *const fd = 
-//        frequency_distribution_builder_build(file_name);
-//
-//    ABORT_ON(fd == NULL)
-//
-//    CodeTable* code_table = codetable_builder_build(fd);
-//
-//    ABORT_ON(code_table == NULL)
-//
-//    const size_t code_table_size = codetable_size(code_table);
-//    const size_t header_length =
-//        byte_array_header_writer_get_header_length(code_table_size);
-//
-//    FILE *const file = fopen(file_name, "wb");
-//
-//    ABORT_ON(file == NULL)
-//
-//    uint8_t* buffer = malloc(BUFFER_SIZE);
-//    uint8_t* header_byte_array = malloc(header_length);
-//
-//    ABORT_ON(buffer == NULL)
-//    ABORT_ON(header_byte_array == NULL)
-//    ABORT_ON(setvbuf(file, (char*)buffer, _IOFBF, BUFFER_SIZE) != 0)
-//
-//    ByteArrayHeaderWriter *const header_writer = malloc(sizeof *header_writer);
-//
-//    ABORT_ON(header_writer == NULL)
-//
-//    const size_t raw_data_length = get_file_length(file);
-//
-//    byte_array_header_writer_init(
-//        header_writer, 
-//        header_byte_array,
-//        header_length, 
-//        raw_data_length, 
-//        code_table
-//    );
-//
-//                                  
-//}

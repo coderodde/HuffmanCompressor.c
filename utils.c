@@ -38,22 +38,39 @@ void infof(const char* fmt, ...) {
     va_end(args);
 }
 
-size_t get_file_length(const FILE* const file) {
-    // Save current position:
-    __int64 cur = _ftelli64(file);
+size_t get_file_length_by_name(const char *const filename) {
+    FILE* f = fopen(filename, "rb");
+    ABORT_ON(f)
 
-    ABORT_ON(cur < 0);
+#if defined(_WIN32)
+    // Windows-safe: use 64-bit seek/tell
+    if (_fseeki64(f, 0, SEEK_END) != 0) {
+        fclose(f);
+        return 0;
+    }
 
-    ABORT_ON(_fseeki64(file, 0, SEEK_END) != 0);
-    
-    __int64 end = _ftelli64(file);
+    __int64 pos = _ftelli64(f);
 
-    ABORT_ON(end < 0);
+    fclose(f);
 
-    // Restore original position:
-    ABORT_ON(_fseeki64(file, cur, SEEK_SET) != 0);
+    ABORT_ON(pos < 0)
 
-    return (size_t) end;
+    return (size_t)pos;
+
+#else
+    // POSIX: fseeko / ftello (64-bit)
+    if (fseeko(f, 0, SEEK_END) != 0) {
+        fclose(f);
+        return 0;
+    }
+
+    off_t pos = ftello(f);
+    fclose(f);
+
+    ABORT_ON(pos < 0)
+
+    return (size_t)pos;
+#endif
 }
 
 size_t get_ms() {
@@ -61,16 +78,5 @@ size_t get_ms() {
     return (size_t) GetTickCount64();
 #else
     return 0;
-#endif
-}
-
-size_t get_number_of_cpus() {
-#ifdef _WIN32
-    SYSTEM_INFO si;
-    GetSystemInfo(&si);
-    return (size_t) si.dwNumberOfProcessors;
-#else
-    const long nprocs = sysconf(_SC_NPROCESSORS_ONLN);
-    return nprocs > 0 ? (size_t) nprocs : 1;
 #endif
 }

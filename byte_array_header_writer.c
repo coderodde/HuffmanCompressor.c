@@ -101,9 +101,9 @@ void byte_array_header_writer_perform_write(
     ABORT_ON(writer->output_data == NULL)
     ABORT_ON(writer->table == NULL)
    
-    byte_array_header_writer_write_code_size(writer);
+    byte_array_header_writer_write_code_size      (writer);
     byte_array_header_writer_write_raw_data_length(writer);
-    byte_array_header_writer_write_code_table(writer);
+    byte_array_header_writer_write_code_table     (writer);
 }
 
 size_t byte_array_header_writer_get_header_length(
