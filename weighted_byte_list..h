@@ -11,22 +11,33 @@ typedef struct WeightedByteList {
     uint8_t* data;
     size_t size;
     size_t total_list_weight;
-} WeightedByteList;
+} 
+WeightedByteList;
 
-void          weighted_bytelist_init(WeightedByteList* const list);
-void          weighted_bytelist_append(WeightedByteList* const list,
-                                       const uint8_t byte);
+void weighted_bytelist_init(
+    WeightedByteList* list
+);
 
-void          weighted_bytelist_append_all(
-                        WeightedByteList* const target_list,
-                        const WeightedByteList* const source_list);
+void weighted_bytelist_append(
+    WeightedByteList* list,
+    uint8_t byte
+);
 
-size_t        weighted_bytelist_size(const WeightedByteList* const list);
+size_t weighted_bytelist_size(
+    WeightedByteList* list
+);
 
-void          weighted_bytelist_free(WeightedByteList* const list);
-const uint8_t weighted_bytelist_get(const WeightedByteList* const list, 
-                                    const size_t index);
+void weighted_bytelist_free(
+    WeightedByteList* list
+);
 
-const size_t  weighted_bytelist_total_weight(const WeightedByteList* const list);
+uint8_t weighted_bytelist_get(
+    WeightedByteList* list, 
+    size_t index
+);
+
+size_t weighted_bytelist_total_weight(
+    WeightedByteList* list
+);
 
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_WEIGHTED_BYTE_LIST_H

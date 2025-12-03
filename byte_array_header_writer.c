@@ -60,7 +60,8 @@ static void byte_array_header_writer_write_raw_data_length(
 
     // Force little-endian encoding:
     for (size_t i = 0; i < sizeof(size_t); ++i) {
-        writer->output_data[i] = (uint8_t) (raw_data_length >> (8 * i));
+        writer->output_data[i + sizeof(size_t)] = 
+            (uint8_t)(raw_data_length >> (8 * i));
     }
 }
 

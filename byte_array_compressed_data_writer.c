@@ -34,9 +34,9 @@ void byte_array_compressed_data_writer_init(
 }
 
 static void write_codeword(
-    uint8_t *const data,
-    const size_t current_bit_index,
-    const Codeword *const codeword
+    uint8_t* data,
+    size_t current_bit_index,
+    Codeword* codeword
 );
 
 void byte_array_compressed_data_writer_write(
@@ -46,7 +46,7 @@ void byte_array_compressed_data_writer_write(
     size_t current_bit_index = writer->starting_bit_index;
 
     for (size_t i = 0; i < writer->input_data_length; ++i) {
-        const uint8_t byte = (uint8_t) writer->input_data[i];
+        uint8_t byte = writer->input_data[i];
         Codeword* codeword = codetable_get(writer->code_table, byte);
         codeword = codeword_reverse(codeword);
         size_t codeword_len = codeword_length(codeword);
@@ -60,20 +60,20 @@ void byte_array_compressed_data_writer_write(
 }
 
 static void set_bit(
-    uint8_t* const data,
-    const size_t byte_index,
-    const size_t bit_index
+    uint8_t* data,
+    size_t byte_index,
+    size_t bit_index
 );
 
 static void write_codeword(
-    uint8_t* const data,
-    const size_t current_bit_index,
-    const Codeword* const codeword
+    uint8_t* data,
+    size_t current_bit_index,
+    Codeword* codeword
 )
 {
     size_t byte_index = current_bit_index / BITS_PER_BYTE;
     size_t bit_index  = current_bit_index % BITS_PER_BYTE;
-    const size_t codeword_len = codeword_length(codeword);
+    size_t codeword_len = codeword_length(codeword);
 
     for (size_t i = 0; i < codeword_len; ++i) {
 
@@ -93,11 +93,11 @@ static void write_codeword(
 }
 
 static void set_bit(
-    uint8_t* const data,
-    const size_t byte_index,
-    const size_t bit_index
+    uint8_t* data,
+    size_t byte_index,
+    size_t bit_index
 )
 {
-    const uint8_t mask = 1 << bit_index;
+    uint8_t mask = 1 << bit_index;
     data[byte_index] |= mask;
 }

@@ -7,14 +7,28 @@
 typedef struct PriorityQueue {
     WeightedByteList** data;
     size_t size;
-} PriorityQueue;
+} 
+PriorityQueue;
 
-void priority_queue_init(PriorityQueue *const pq);
-void priority_queue_insert(PriorityQueue *const pq, 
-                           WeightedByteList *const wbl);
+void priority_queue_init(
+    PriorityQueue* pq
+);
 
-WeightedByteList* priority_queue_extract_min(PriorityQueue *const pq);
-size_t priority_queue_size(const PriorityQueue *const pq);
-void priority_queue_free(PriorityQueue *const pq);
+void priority_queue_insert(
+    PriorityQueue* pq, 
+    WeightedByteList* wbl
+);
+
+WeightedByteList* priority_queue_extract_min(
+    PriorityQueue* pq
+);
+
+size_t priority_queue_size(
+    PriorityQueue* pq
+);
+
+void priority_queue_free(
+    PriorityQueue* pq
+);
 
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_PRIORITY_QUEUE_H
