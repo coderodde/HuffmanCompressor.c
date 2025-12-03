@@ -76,15 +76,6 @@ static void bit_writer_finish(BitWriter* bw) {
     bit_writer_flush(bw);
 }
 
-
-//typedef struct {
-//    uint32_t bits;     // code bits in some order
-//    uint8_t  bit_len;  // number of valid bits
-//} Code;
-
-//Code codetable_get(const CodeTable* ct, uint8_t symbol);
-
-
 void compress(
     const char* const input_file_name,
     const char* const output_file_name)
@@ -98,6 +89,9 @@ void compress(
     // 2. Build code table:
     CodeTable* code_table = codetable_builder_build(fd);
     ABORT_ON(code_table == NULL);
+
+    // TODO: remove this later!
+    puts(codetable_to_string(code_table));
 
     const size_t code_table_size = codetable_size(code_table);
     const size_t header_length =

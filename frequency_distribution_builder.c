@@ -9,10 +9,12 @@
 #define BUFFER_SIZE (1024 * 64)
 
 FrequencyDistribution* frequency_distribution_builder_build(const char *const file_name) {
-    FILE* file = fopen(file_name, "rb");
-    ABORT_ON(file == NULL)
+    ABORT_ON(file_name == NULL)
 
-    const size_t data_size = get_file_length(file);
+    const size_t data_size = get_file_length_by_name(file_name);
+    FILE* file = fopen(file_name, "rb");
+
+    ABORT_ON(file == NULL)
 
     FrequencyDistribution* distribution = malloc(sizeof *distribution);
     

@@ -6,21 +6,43 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int main()
+int main(int argc, char* argv[])
 {
-    const size_t ta = get_ms();
-    FrequencyDistribution* fd = frequency_distribution_builder_build("C:\\Users\\rodio\\Documents\\WarAndPeace.html");
-    const size_t tb = get_ms();
+    if (argc != 4) {
+        printf("Usage: %s <-c|-d> <INPUT_FILE> <OUTPUT_FILE>\n", 
+               extract_file_name_only(argv[0]));
 
-    printf("Duration: %zu ms\n", tb - ta);
+        return EXIT_FAILURE;
+    }
 
-    CodeTable* ct = codetable_builder_build(fd);
+    const char* const mode = argv[1];
 
-    printf("%s\n", codetable_to_string(ct));
-    printf("%s\n", __FUNCTION__);
-    printf("%s\n", __FILE__);
-    ABORT_ON(NULL == 0)
+    if (strcmp(mode, "-c") == 0) {
+        const char* const input_file  = argv[2];
+        const char* const output_file = argv[3];
+
+        infof("Compressing file '%s' to '%s'.", input_file, output_file);
+
+        compress(input_file, output_file);
+
+        infof("Compression completed.");
+
+    } else if (strcmp(mode, "-d") == 0) {
+        const char* const input_file  = argv[2];
+        const char* const output_file = argv[3];
+
+        infof("Decompressing file '%s' to '%s'.", input_file, output_file);
+        
+        decompress(input_file, output_file);
+
+        infof("Decompression completed.");
+    }
+    else {
+        printf("Unknown mode '%s'. Use 'c' for compression and 'd' for decompression.\n", mode);
+        return EXIT_FAILURE;
+    }
 
     return EXIT_SUCCESS;
 }

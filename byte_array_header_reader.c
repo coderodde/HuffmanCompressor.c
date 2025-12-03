@@ -4,7 +4,9 @@
 #include <stdlib.h>
 
 static size_t read_raw_data_length(const uint8_t *const compressed_data);
+
 static size_t read_code_table_size(const uint8_t *const compressed_data);
+
 static CodeTable* read_code_table(
     const size_t code_table_size,
     const uint8_t *const compressed_data,
@@ -21,15 +23,17 @@ void byte_array_header_reader_init(
     ABORT_ON(compressed_data == NULL)
 
     CodeTable *const ct = malloc(sizeof *ct);
+    ABORT_ON(ct == NULL)
     codetable_init(ct);
 
-    reader->compressed_data = compressed_data;
+    reader->compressed_data        = compressed_data;
     reader->compressed_data_length = compressed_data_length;
-    reader->code_table = ct;
+    reader->code_table             = ct;
 
-    reader->raw_data_length = read_raw_data_length(compressed_data);
+    reader->raw_data_length      = read_raw_data_length(compressed_data);
     const size_t code_table_size = read_code_table_size(compressed_data);
-    reader->code_table = read_code_table(code_table_size,
+    reader->code_table           = read_code_table(
+                                         code_table_size,
                                          compressed_data,
                                          compressed_data_length);
 }

@@ -54,6 +54,9 @@
     <ClCompile Include="compressor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="decompressor.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="codeword.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="compressor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="decompressor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
