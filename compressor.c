@@ -77,11 +77,11 @@ static void bit_writer_finish(BitWriter* bw) {
 }
 
 void compress(
-    const char* const input_file_name,
-    const char* const output_file_name)
+    char* input_file_name,
+    char* output_file_name)
 {
     // 1. Build frequency distribution from INPUT file:
-    const FrequencyDistribution* const fd =
+    FrequencyDistribution* fd =
         frequency_distribution_builder_build(input_file_name);
 
     ABORT_ON(fd == NULL);
@@ -93,12 +93,12 @@ void compress(
     // TODO: remove this later!
     puts(codetable_to_string(code_table));
 
-    const size_t code_table_size = codetable_size(code_table);
-    const size_t header_length =
+    size_t code_table_size = codetable_size(code_table);
+    size_t header_length =
         byte_array_header_writer_get_header_length(code_table_size);
 
     // 3. Open OUTPUT file:
-    FILE* const out = fopen(output_file_name, "wb");
+    FILE* out = fopen(output_file_name, "wb");
     ABORT_ON(out == NULL);
 
     // Optional: stdio buffer, separate from our 64KiB bit buffer
@@ -110,7 +110,7 @@ void compress(
 
     const size_t raw_data_length = get_file_length_by_name(input_file_name);
 
-    ByteArrayHeaderWriter* const header_writer = malloc(sizeof * header_writer);
+    ByteArrayHeaderWriter* header_writer = malloc(sizeof * header_writer);
     ABORT_ON(header_writer == NULL);
 
     byte_array_header_writer_init(
@@ -128,7 +128,7 @@ void compress(
     ABORT_ON(written != header_length);
 
     // 6. Now write the actual compressed codes, 64KiB at a time:
-    FILE* const in = fopen(input_file_name, "rb");
+    FILE* in = fopen(input_file_name, "rb");
     ABORT_ON(in == NULL);
 
     BitWriter bw;
@@ -147,8 +147,6 @@ void compress(
             uint8_t symbol = inbuf[i];
 
             Codeword* c = codetable_get(code_table, symbol);
-            // c.bits: the code bits
-            // c.bit_len: how many bits are valid
 
             bit_writer_put_bits(&bw, c->bits, c->length);
         }
@@ -162,5 +160,6 @@ void compress(
 
     free(header_writer);
     free(header_byte_array);
-    // also free code_table and fd if they are heap-allocated etc.
+    free(code_table);
+    free(fd);
 }

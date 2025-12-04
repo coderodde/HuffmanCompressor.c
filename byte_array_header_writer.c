@@ -88,11 +88,13 @@ static void byte_array_header_writer_write_code_table(
             const size_t num_codeword_bytes = codeword_number_of_bytes(codeword);
             uint8_t* const codeword_bytes   = codeword_get_bytes(codeword);
 
-            for (size_t i = 0; i < num_codeword_bytes; ++i) {
-                writer->output_data[current_byte_index++] = codeword_bytes[i];
-            }
+            memcpy(&writer->output_data[current_byte_index],
+                   codeword_bytes, 
+                   num_codeword_bytes);
 
             free(codeword_bytes);
+
+            current_byte_index += sizeof(uint32_t);
         }
     }
     
