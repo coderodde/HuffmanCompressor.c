@@ -9,7 +9,8 @@
 typedef struct Codeword {
     size_t length;
     uint32_t bits;
-} Codeword;
+} 
+Codeword;
 
 Codeword* codeword_alloc(
     size_t length
@@ -37,7 +38,8 @@ size_t codeword_length(
 );
 
 bool codeword_get_bit(
-    Codeword* codeword, size_t index
+    Codeword* codeword, 
+    size_t index
 );
 
 void codeword_set_bit(

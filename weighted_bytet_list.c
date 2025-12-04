@@ -3,7 +3,10 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void weighted_bytelist_init(WeightedByteList* const list) {
+void weighted_bytelist_init(
+    WeightedByteList* list
+)
+{
     ABORT_ON(list == NULL);
 
     *list = (WeightedByteList){ 
@@ -13,15 +16,20 @@ void weighted_bytelist_init(WeightedByteList* const list) {
     };
 }
 
-void weighted_bytelist_append(WeightedByteList* const list,
-                              const uint8_t byte) {
+void weighted_bytelist_append(
+    WeightedByteList* list,
+    uint8_t byte
+)
+{
     ABORT_ON(list == NULL);
     list->data[list->size++] = byte;
 }
 
 void weighted_bytelist_append_all(
-    WeightedByteList* const target_list,
-    const WeightedByteList* const source_list) {
+    WeightedByteList* target_list,
+    WeightedByteList* source_list
+)
+{
 
     ABORT_ON(target_list == NULL);
     ABORT_ON(source_list == NULL);
@@ -34,7 +42,10 @@ void weighted_bytelist_append_all(
     target_list->total_list_weight += source_list->total_list_weight;
 }
 
-void weighted_bytelist_free(WeightedByteList* const list) {
+void weighted_bytelist_free(
+    WeightedByteList* list
+)
+{
     ABORT_ON(list == NULL);
     ABORT_ON(list->data == NULL);
 

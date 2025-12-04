@@ -19,7 +19,11 @@ typedef struct BitWriter {
 } 
 BitWriter;
 
-static void bit_writer_init(BitWriter* bw, FILE* file) {
+static void bit_writer_init(
+    BitWriter* bw, 
+    FILE* file
+)
+{
     *bw = (BitWriter){
         .file = file,
         .byte_pos = 0,
@@ -28,11 +32,17 @@ static void bit_writer_init(BitWriter* bw, FILE* file) {
     };
 }
 
-static void bit_writer_free(BitWriter* bw) {
+static void bit_writer_free(
+    BitWriter* bw
+)
+{
     free(bw->buffer);
 }
 
-static void bit_writer_flush(BitWriter* bw) {
+static void bit_writer_flush(
+    BitWriter* bw
+)
+{
     if (bw->byte_pos == 0) {
         return;
     }
@@ -45,7 +55,12 @@ static void bit_writer_flush(BitWriter* bw) {
 }
 
 // Write 'nbits' least significant bits of 'code' into the stream.
-static void bit_writer_put_bits(BitWriter* bw, uint32_t code, size_t nbits) {
+static void bit_writer_put_bits(
+    BitWriter* bw, 
+    uint32_t code, 
+    size_t nbits
+)
+{
     while (nbits--) {
         // Take the next bit from MSB side or LSB side depending on your convention.
         uint8_t bit = (code >> nbits) & 1U;
@@ -55,6 +70,7 @@ static void bit_writer_put_bits(BitWriter* bw, uint32_t code, size_t nbits) {
             if (bw->byte_pos == BUFFER_SIZE) {
                 bit_writer_flush(bw);
             }
+
             bw->buffer[bw->byte_pos] = 0;
         }
 
@@ -68,17 +84,21 @@ static void bit_writer_put_bits(BitWriter* bw, uint32_t code, size_t nbits) {
     }
 }
 
-// Pad the last byte with zeros and flush
-static void bit_writer_finish(BitWriter* bw) {
+static void bit_writer_finish(
+    BitWriter* bw
+)
+{
     if (bw->bit_pos != 0) {
         bw->byte_pos++;  // last partially filled byte is valid
     }
+
     bit_writer_flush(bw);
 }
 
 void compress(
     char* input_file_name,
-    char* output_file_name)
+    char* output_file_name
+)
 {
     // 1. Build frequency distribution from INPUT file:
     FrequencyDistribution* fd =

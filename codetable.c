@@ -11,7 +11,10 @@
 #define STRING_LENGTH 5000
 #define CODETABLE_CAPACITY 256
 
-void codetable_init(CodeTable *const code_table) {
+void codetable_init(
+    CodeTable* code_table
+) 
+{
     ABORT_ON(code_table == NULL);
 
     code_table->size = 0;
@@ -21,9 +24,12 @@ void codetable_init(CodeTable *const code_table) {
     }
 }
 
-void codetable_put(CodeTable* table,
-                   const uint8_t byte,
-                   Codeword* const codeword) {
+void codetable_put(
+    CodeTable* table,
+    uint8_t byte,
+    Codeword* codeword
+)
+{
     ABORT_ON(table == NULL);
     ABORT_ON(codeword == NULL);
 
@@ -31,13 +37,19 @@ void codetable_put(CodeTable* table,
     table->size++;
 }
 
-Codeword* codetable_get(CodeTable* table,
-                        uint8_t byte) {
+Codeword* codetable_get(
+    CodeTable* table,
+    uint8_t byte
+) 
+{
     ABORT_ON(table == NULL)
     return table->table[byte];
 }
 
-size_t codetable_size(const CodeTable* const table) {
+size_t codetable_size(
+    CodeTable* table
+)
+{
     ABORT_ON(table == NULL);
     return table->size;
 }
@@ -49,14 +61,20 @@ size_t codetable_size(const CodeTable* const table) {
 // Converts a byte value to its hexadecimal represesntation.
 // For example, the byte 0x42 will be converted to "0x42" 
 // and 0x5 will be converted to "0x05".
-static char *const convert_byte_to_string(const uint8_t byte) {
+static char* convert_byte_to_string(
+    uint8_t byte
+)
+{
     char *const str = malloc(BYTE_HEX_STRING_LEN + 1);
     ABORT_ON(str == NULL);
     snprintf(str, BYTE_HEX_STRING_LEN + 1, "0x%02X", byte);
     return str;
 }
 
-char* codetable_to_string(const CodeTable* const table) {
+char* codetable_to_string(
+    CodeTable* table
+) 
+{
     ABORT_ON(table == NULL);
     ABORT_ON(codetable_size(table) == 0);
     char* str = malloc(sizeof(char) * STRING_LENGTH);

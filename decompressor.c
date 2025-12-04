@@ -9,17 +9,17 @@
 #define HEADER_MAX_SIZE (16 + 256 * 6)
 
 void decompress(
-    const char* const input_file_name,
-    const char* const output_file_name
+    char* input_file_name,
+    char* output_file_name
 )
 {
-    FILE* const in = fopen(input_file_name, "rb");
+    FILE* in = fopen(input_file_name, "rb");
     ABORT_ON(in == NULL)
 
     uint8_t* header_buffer = malloc(HEADER_MAX_SIZE);
     ABORT_ON(header_buffer == NULL)
 
-    const size_t header_bytes_read =
+    size_t header_bytes_read =
         fread(header_buffer, 1, HEADER_MAX_SIZE, in);
 
     ByteArrayHeaderReader reader;
@@ -34,13 +34,13 @@ void decompress(
     
     puts(codetable_to_string(ct));
 
-    const size_t code_table_size = codetable_size(ct);
+    size_t code_table_size = codetable_size(ct);
     size_t expected_header_length = 
         byte_array_header_reader_get_header_length(&reader);
 
     ABORT_ON(expected_header_length != header_bytes_read)
 
-    const size_t raw_data_length = 
+    size_t raw_data_length = 
         byte_array_header_reader_get_raw_data_length(&reader);
 
     fclose(in);

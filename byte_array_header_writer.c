@@ -14,7 +14,8 @@ void byte_array_header_writer_init(
     size_t output_data_length,
     size_t raw_data_length,
     CodeTable* table
-) {
+) 
+{
     ABORT_ON(writer == NULL)
     ABORT_ON(output_data == NULL)
     ABORT_ON(table == NULL)
@@ -30,6 +31,7 @@ void byte_array_header_writer_init(
         .table                = table,
     };
 
+    // Clear away the junk data:
     memset(output_data,
            0,
            output_data_length);

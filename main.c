@@ -19,11 +19,11 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    const char* const mode = argv[1];
+    char* mode = argv[1];
 
     if (strcmp(mode, "-c") == 0) {
-        const char* const input_file  = argv[2];
-        const char* const output_file = argv[3];
+        char* input_file  = argv[2];
+        char* output_file = argv[3];
 
         infof("Compressing file '%s' to '%s'.", input_file, output_file);
 
@@ -32,8 +32,8 @@ int main(int argc, char* argv[])
         infof("Compression completed.");
 
     } else if (strcmp(mode, "-d") == 0) {
-        const char* const input_file  = argv[2];
-        const char* const output_file = argv[3];
+        char* input_file  = argv[2];
+        char* output_file = argv[3];
 
         infof("Decompressing file '%s' to '%s'.", input_file, output_file);
         

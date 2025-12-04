@@ -6,7 +6,9 @@
 #define CODETABLE_CAPACITY 256
 
 CodeTable* codetable_builder_build(
-    const FrequencyDistribution* const frequency_distribution) {
+    FrequencyDistribution* frequency_distribution
+) 
+{
     ABORT_ON(frequency_distribution == NULL);
     ABORT_ON(frequency_distribution_size(frequency_distribution) == 0);
 

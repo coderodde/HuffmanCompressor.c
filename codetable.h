@@ -11,7 +11,8 @@
 typedef struct CodeTable {
     Codeword* table[CODE_TABLE_CAPACITY];
     size_t size;
-} CodeTable;
+}
+CodeTable;
 
 void codetable_init(
     CodeTable* table

@@ -4,7 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-void errorf(const char* fmt, ...) {
+void errorf(
+    char* fmt, 
+    ...
+)
+{
     va_list args;
     va_start(args, fmt);
 
@@ -21,7 +25,11 @@ void errorf(const char* fmt, ...) {
     va_end(args);
 }
 
-void infof(const char* fmt, ...) {
+void infof(
+    char* fmt, 
+    ...
+)
+{
     va_list args;
     va_start(args, fmt);
 
@@ -38,7 +46,10 @@ void infof(const char* fmt, ...) {
     va_end(args);
 }
 
-size_t get_file_length_by_name(const char *const filename) {
+size_t get_file_length_by_name(
+    char* filename
+)
+{
     FILE* f = fopen(filename, "rb");
     ABORT_ON(f == NULL)
 
@@ -81,7 +92,10 @@ size_t get_ms() {
 #endif
 }
 
-char* extract_file_name_only(char* path_name) {
+char* extract_file_name_only(
+    char* path_name
+)
+{
     const size_t len = strlen(path_name);
     SSIZE_T i;
 

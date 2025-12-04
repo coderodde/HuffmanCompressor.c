@@ -30,6 +30,8 @@ void infof(
 
 size_t get_ms();
 
-size_t get_file_length_by_name(char* filename);
+size_t get_file_length_by_name(
+    char* filename
+);
 
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_UTILS_H

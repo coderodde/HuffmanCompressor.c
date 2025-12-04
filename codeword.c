@@ -5,7 +5,11 @@
 static const size_t BITS_IN_BYTE = 8;
 static const uint32_t LSBYTE_MASK = 0xFF;
 
-static void check_index(const Codeword* const codeword, const size_t index) {
+static void check_index(
+    Codeword* codeword, 
+    size_t index
+)
+{
     if (index >= codeword->length) {
         errorf("codeword_get_bit: index %zu out of bounds for codeword of length %zu.",
                index, 
@@ -15,7 +19,10 @@ static void check_index(const Codeword* const codeword, const size_t index) {
     }
 }
 
-Codeword* codeword_alloc(const size_t length) {
+Codeword* codeword_alloc(
+    size_t length
+)
+{
     Codeword* pcodeword = malloc(sizeof(Codeword));
     
     if (pcodeword == NULL) {
@@ -27,7 +34,10 @@ Codeword* codeword_alloc(const size_t length) {
     return pcodeword;
 }
 
-Codeword* codeword_reverse(const Codeword *const pcodeword) {
+Codeword* codeword_reverse(
+    Codeword* pcodeword
+) 
+{
     Codeword* p_reversed_codeword = malloc(sizeof(Codeword));
 
     if (p_reversed_codeword == NULL) {
@@ -44,13 +54,19 @@ Codeword* codeword_reverse(const Codeword *const pcodeword) {
     return p_reversed_codeword;
 }
 
-size_t codeword_number_of_bytes(const Codeword* const codeword) {
+size_t codeword_number_of_bytes(
+    Codeword* codeword
+)
+{
     ABORT_ON(codeword == NULL);
 
     return (codeword->length + 7) / BITS_IN_BYTE; // BITS_IN_BYTE = 8
 }
 
-uint8_t* codeword_get_bytes(const Codeword* const codeword) {
+uint8_t* codeword_get_bytes(
+    Codeword* codeword
+)
+{
     ABORT_ON(codeword == NULL);
 
     const size_t num_bytes = codeword_number_of_bytes(codeword);
@@ -67,7 +83,11 @@ uint8_t* codeword_get_bytes(const Codeword* const codeword) {
     return bytes;
 }
 
-bool codeword_prepend_bit(Codeword* const codeword, const bool bit) {
+bool codeword_prepend_bit(
+    Codeword* codeword, 
+    bool bit
+)
+{
     ABORT_ON(codeword == NULL);
 
     codeword->length++;
@@ -79,12 +99,19 @@ bool codeword_prepend_bit(Codeword* const codeword, const bool bit) {
     return true;
 }
 
-size_t codeword_length(const Codeword* const codeword) {
+size_t codeword_length(
+    Codeword* codeword
+)
+{
     ABORT_ON(codeword == NULL);
     return codeword->length;
 }
 
-bool codeword_get_bit(const Codeword* const codeword, const size_t index) {
+bool codeword_get_bit(
+    Codeword* codeword,
+    size_t index
+)
+{
     ABORT_ON(codeword == NULL);
 
     check_index(codeword, index);
@@ -93,7 +120,11 @@ bool codeword_get_bit(const Codeword* const codeword, const size_t index) {
     return (codeword->bits & mask) != 0;
 }
 
-void codeword_set_bit(Codeword* const codeword, const size_t index) {
+void codeword_set_bit(
+    Codeword* codeword, 
+    size_t index
+)
+{
     ABORT_ON(codeword == NULL);
 
     check_index(codeword, index);
@@ -102,7 +133,11 @@ void codeword_set_bit(Codeword* const codeword, const size_t index) {
     codeword->bits |= mask;
 }
 
-bool codeword_equals(const Codeword* const a, const Codeword* const b) {
+bool codeword_equals(
+    Codeword* a, 
+    Codeword* b
+)
+{
     ABORT_ON(a == NULL);
     ABORT_ON(b == NULL);
 
@@ -122,7 +157,10 @@ bool codeword_equals(const Codeword* const a, const Codeword* const b) {
     return true;
 }
 
-char* codeword_to_string(const Codeword* const codeword) {
+char* codeword_to_string(
+    Codeword* codeword
+)
+{
     ABORT_ON(codeword == NULL);
     char* str = malloc(codeword->length + 1);
     ABORT_ON(str == NULL);
