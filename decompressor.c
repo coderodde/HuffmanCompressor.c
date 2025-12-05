@@ -4,9 +4,12 @@
 #include "utils.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define BUFFER_SIZE (1024 * 64)
-#define HEADER_MAX_SIZE (16 + 256 * 6)
+static const size_t BUFFER_SIZE = 1024 * 64;
+static const size_t HEADER_MAX_SIZE  = 16 + 256 * 6;
+static const size_t CODE_ENTRY_LENGTH = 6;
 
 void decompress(
     char* input_file_name,
@@ -16,34 +19,69 @@ void decompress(
     FILE* in = fopen(input_file_name, "rb");
     ABORT_ON(in == NULL)
 
-    uint8_t* header_buffer = malloc(HEADER_MAX_SIZE);
-    ABORT_ON(header_buffer == NULL)
+    uint8_t* buffer = malloc(BUFFER_SIZE);
+    ABORT_ON(buffer == NULL)
 
-    size_t header_bytes_read =
-        fread(header_buffer, 1, HEADER_MAX_SIZE, in);
+    // Read the code table size and raw data length first:
+    size_t bytes_read = fread(buffer, 1, 2 * sizeof(size_t), in);
 
-    ByteArrayHeaderReader reader;
+    ABORT_ON(bytes_read != 2 * sizeof(size_t))
 
-    byte_array_header_reader_init(&reader, 
-                                  header_buffer, 
-                                  HEADER_MAX_SIZE);
+    size_t code_table_size = 0;
+    size_t raw_data_length = 0;
 
-    CodeTable* ct = byte_array_header_reader_get_code_table(&reader);
+    for (size_t i = 0; i < sizeof(size_t); ++i) {
+        code_table_size |= ((size_t) buffer[i]) << (8 * i);
+        raw_data_length |= ((size_t) buffer[sizeof(size_t) + i]) << (8 * i);
+    }
 
-    ABORT_ON(ct == NULL)
-    
+    CodeTable* ct = malloc(sizeof * ct);
+    ABORT_ON(ct == NULL);
+
+    codetable_init(ct);
+
+    size_t current_offset = 2 * sizeof(size_t);
+
+    for (size_t i = 0; i < code_table_size ; ++i) {
+        bytes_read = fread(buffer + current_offset,
+                           1,
+                           CODE_ENTRY_LENGTH, 
+                           in);
+
+        ABORT_ON(bytes_read != CODE_ENTRY_LENGTH)
+
+        uint8_t byte            = buffer[current_offset++];
+        uint8_t length          = buffer[current_offset++];
+        size_t number_of_bytes  = codeword_number_of_bytes(length);
+        uint8_t codeword_bytes[4];
+
+        memcpy(codeword_bytes, 
+               &buffer[current_offset], 
+               4);
+
+        Codeword* codeword = malloc(sizeof * codeword);
+        ABORT_ON(codeword == NULL)
+
+        *codeword = (Codeword) {
+            .length = length,
+            .bits   = 0
+        };
+
+        for (size_t j = 0; j < number_of_bytes; ++j) {
+            codeword->bits |= ((uint32_t) codeword_bytes[j]) << (8 * j);
+        }
+
+        codetable_put(ct, 
+                      byte, 
+                      codeword);
+
+        // Add 4 to the current_offset thus omitting the codeword bytes:
+        current_offset += CODE_ENTRY_LENGTH - 2;
+    }
+
     puts(codetable_to_string(ct));
 
-    size_t code_table_size = codetable_size(ct);
-    size_t expected_header_length = 
-        byte_array_header_reader_get_header_length(&reader);
-
-    ABORT_ON(expected_header_length != header_bytes_read)
-
-    size_t raw_data_length = 
-        byte_array_header_reader_get_raw_data_length(&reader);
-
     fclose(in);
-    free(header_buffer);
+    free(buffer);
     free(ct);
 }

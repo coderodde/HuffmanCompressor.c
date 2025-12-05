@@ -55,12 +55,10 @@ Codeword* codeword_reverse(
 }
 
 size_t codeword_number_of_bytes(
-    Codeword* codeword
+    size_t bit_length
 )
 {
-    ABORT_ON(codeword == NULL);
-
-    return (codeword->length + 7) / BITS_IN_BYTE; // BITS_IN_BYTE = 8
+    return (bit_length + 7) / BITS_IN_BYTE; // BITS_IN_BYTE = 8
 }
 
 uint8_t* codeword_get_bytes(

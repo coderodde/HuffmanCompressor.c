@@ -3,7 +3,7 @@
 #include "utils.h"
 #include <stdlib.h>
 
-#define BYTES_PER_CODEWORD_ENTRY 6
+static const size_t BYTES_PER_CODEWORD_ENTRY = 6;
 
 static size_t read_raw_data_length(
     uint8_t* compressed_data
@@ -14,15 +14,15 @@ static size_t read_code_table_size(
 );
 
 static CodeTable* read_code_table(
-    size_t code_table_size,
+    size_t   code_table_size,
     uint8_t* compressed_data,
-    size_t compressed_data_length
+    size_t   compressed_data_length
 );
 
 void byte_array_header_reader_init(
     ByteArrayHeaderReader* reader,
-    uint8_t* compressed_data,
-    size_t compressed_data_length
+    uint8_t*               compressed_data,
+    size_t                 compressed_data_length
 )
 {
     ABORT_ON(reader == NULL)
@@ -42,6 +42,10 @@ void byte_array_header_reader_init(
                                          code_table_size,
                                          compressed_data,
                                          compressed_data_length);
+
+    reader->header_length = 2 * sizeof(size_t) + 
+                                   code_table_size * 
+                                   BYTES_PER_CODEWORD_ENTRY;
 }
 
 CodeTable* byte_array_header_reader_get_code_table(
@@ -51,11 +55,18 @@ CodeTable* byte_array_header_reader_get_code_table(
     return reader->code_table;
 }
 
-const size_t byte_array_header_reader_get_raw_data_length(
+size_t byte_array_header_reader_get_raw_data_length(
     ByteArrayHeaderReader* reader
 )
 {
     return reader->raw_data_length;
+}
+
+size_t byte_array_header_get_header_length(
+    ByteArrayHeaderReader* reader
+)
+{
+    return reader->header_length;
 }
 
 static size_t read_raw_data_length(
@@ -112,9 +123,9 @@ static Codeword* codeword_deserialize(
 }
 
 static CodeTable* read_code_table(
-    size_t code_table_size,
+    size_t   code_table_size,
     uint8_t* compressed_data,
-    size_t compressed_data_length
+    size_t   compressed_data_length
 ) 
 {
     CodeTable* table = malloc(sizeof * table);
@@ -138,7 +149,7 @@ static CodeTable* read_code_table(
     return table;
 }
 
-const size_t byte_array_header_reader_get_header_length(
+size_t byte_array_header_reader_get_header_length(
     ByteArrayHeaderReader* reader
 )
 {
