@@ -8,7 +8,7 @@ static const uint32_t LSBYTE_MASK = 0xFF;
 
 static void check_index(
     Codeword* codeword, 
-    size_t index
+    size_t    index
 )
 {
     if (index >= codeword->length) {

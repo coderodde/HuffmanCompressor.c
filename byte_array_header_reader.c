@@ -142,7 +142,7 @@ static CodeTable* read_code_table(
 
         ABORT_ON(codeword == NULL)
 
-        codetable_put(table, (uint8_t)i, codeword);
+        codetable_put(table, (uint8_t) i, codeword);
         offset += BYTES_PER_CODEWORD_ENTRY;
     }
 

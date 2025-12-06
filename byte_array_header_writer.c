@@ -9,11 +9,11 @@ static const size_t BYTES_PER_CODEWORD_ENTRY = 6;
 static const size_t BITS_PER_BYTE = 8;
 
 void byte_array_header_writer_init(
-    ByteArrayHeaderWriter* const writer,
-    uint8_t* output_data,
-    size_t output_data_length,
-    size_t raw_data_length,
-    CodeTable* table
+    ByteArrayHeaderWriter* writer,
+    uint8_t*               output_data,
+    size_t                 output_data_length,
+    size_t                 raw_data_length,
+    CodeTable*             table
 ) 
 {
     ABORT_ON(writer == NULL)
@@ -38,7 +38,7 @@ void byte_array_header_writer_init(
 }
 
 size_t byte_array_header_writer_get_data_start_bit_index(
-    const ByteArrayHeaderWriter* const writer
+    ByteArrayHeaderWriter* writer
 ) 
 {
     ABORT_ON(writer == NULL)
@@ -48,10 +48,10 @@ size_t byte_array_header_writer_get_data_start_bit_index(
 }
 
 static void byte_array_header_writer_write_code_size(
-    ByteArrayHeaderWriter *const writer
+    ByteArrayHeaderWriter* writer
 ) 
 {
-    const size_t code_table_size = codetable_size(writer->table);
+    size_t code_table_size = codetable_size(writer->table);
 
     // Force little-endian encoding:
     for (size_t i = 0; i < sizeof(size_t); ++i) {
@@ -60,10 +60,10 @@ static void byte_array_header_writer_write_code_size(
 }
 
 static void byte_array_header_writer_write_raw_data_length(
-    ByteArrayHeaderWriter* const writer
+    ByteArrayHeaderWriter* writer
 ) 
 {
-    const size_t raw_data_length = writer->raw_data_length;
+    size_t raw_data_length = writer->raw_data_length;
 
     // Force little-endian encoding:
     for (size_t i = 0; i < sizeof(size_t); ++i) {
@@ -73,7 +73,7 @@ static void byte_array_header_writer_write_raw_data_length(
 }
 
 static void byte_array_header_writer_write_code_table(
-    ByteArrayHeaderWriter* const writer
+    ByteArrayHeaderWriter* writer
 ) 
 { 
     // Skip code size and raw data length:
@@ -104,7 +104,7 @@ static void byte_array_header_writer_write_code_table(
 }
 
 void byte_array_header_writer_perform_write(
-    ByteArrayHeaderWriter* const writer
+    ByteArrayHeaderWriter* writer
 ) 
 {
     ABORT_ON(writer == NULL)
@@ -117,7 +117,7 @@ void byte_array_header_writer_perform_write(
 }
 
 size_t byte_array_header_writer_get_header_length(
-    const size_t code_table_size
+    size_t code_table_size
 )
 {
     return 2 * sizeof(size_t) + code_table_size * BYTES_PER_CODEWORD_ENTRY; 

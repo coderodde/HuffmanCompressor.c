@@ -12,10 +12,10 @@
 #define BUFFER_SIZE (1024 * 64)
 
 typedef struct BitWriter {
-    FILE* file;
+    FILE*    file;
     uint8_t* buffer;
-    size_t  byte_pos;  // next free byte in buffer
-    uint8_t bit_pos;   // next free bit position in current byte [0..7]
+    size_t   byte_pos;  // next free byte in buffer
+    uint8_t  bit_pos;   // next free bit position in current byte [0..7]
 } 
 BitWriter;
 

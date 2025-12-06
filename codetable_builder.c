@@ -20,9 +20,9 @@ CodeTable* codetable_builder_build(
     priority_queue_init(&pq);
 
     for (size_t byte = 0; byte < CODETABLE_CAPACITY; ++byte) {
-        const size_t frequency = frequency_distribution_get_frequency(
-            frequency_distribution,
-            (uint8_t) byte);
+        size_t frequency = frequency_distribution_get_frequency(
+                    frequency_distribution,
+                    (uint8_t) byte);
 
         if (frequency != 0) {
             WeightedByteList* wbl = malloc(sizeof(WeightedByteList));
@@ -48,15 +48,23 @@ CodeTable* codetable_builder_build(
         WeightedByteList* right = priority_queue_extract_min(&pq);
 
         for (size_t i = 0; i < weighted_bytelist_size(left); ++i) {
-            const uint8_t byte = weighted_bytelist_get(left, i);
-            Codeword* codeword = codetable_get(code_table, (uint8_t) byte);
+            uint8_t byte = weighted_bytelist_get(left,
+                                                 i);
+
+            Codeword* codeword = codetable_get(code_table,
+                                               (uint8_t) byte);
+
             ABORT_ON(codeword == NULL);
             codeword_prepend_bit(codeword, true);
         }
 
         for (size_t i = 0; i < weighted_bytelist_size(right); ++i) {
-            const uint8_t byte = weighted_bytelist_get(right, i);
-            Codeword* codeword = codetable_get(code_table, byte);
+            uint8_t byte = weighted_bytelist_get(right,
+                                                 i);
+
+            Codeword* codeword = codetable_get(code_table,
+                                               byte);
+
             ABORT_ON(codeword == NULL);
             codeword_prepend_bit(codeword, false);
         }

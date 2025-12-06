@@ -26,8 +26,8 @@ void codetable_init(
 
 void codetable_put(
     CodeTable* table,
-    uint8_t byte,
-    Codeword* codeword
+    uint8_t    byte,
+    Codeword*  codeword
 )
 {
     ABORT_ON(table == NULL);
@@ -39,7 +39,7 @@ void codetable_put(
 
 Codeword* codetable_get(
     CodeTable* table,
-    uint8_t byte
+    uint8_t    byte
 ) 
 {
     ABORT_ON(table == NULL)
@@ -65,7 +65,7 @@ static char* convert_byte_to_string(
     uint8_t byte
 )
 {
-    char *const str = malloc(BYTE_HEX_STRING_LEN + 1);
+    char* str = malloc(BYTE_HEX_STRING_LEN + 1);
     ABORT_ON(str == NULL);
     snprintf(str, BYTE_HEX_STRING_LEN + 1, "0x%02X", byte);
     return str;
@@ -84,7 +84,7 @@ char* codetable_to_string(
     size_t index = 1;
     
     for (size_t byte = 0; byte < CODETABLE_CAPACITY; ++byte) {
-        const Codeword *const codeword = codetable_get(table, (uint8_t) byte);
+        Codeword* codeword = codetable_get(table, (uint8_t) byte);
 
         if (codeword == NULL) {
             // 'byte' is not stored in the argument code table:
@@ -92,7 +92,7 @@ char* codetable_to_string(
         }
 
         // Print the byte value:
-        char* const byte_str = convert_byte_to_string((uint8_t) byte);
+        char* byte_str = convert_byte_to_string((uint8_t) byte);
         strncpy(str + index, byte_str, BYTE_HEX_STRING_LEN);
         free(byte_str);
         index += BYTE_HEX_STRING_LEN;
@@ -103,7 +103,7 @@ char* codetable_to_string(
 
         // Print the codeword:
         char* codeword_str = codeword_to_string(codeword);
-        const size_t codeword_str_len = strlen(codeword_str);
+        size_t codeword_str_len = strlen(codeword_str);
         strcpy(str + index, codeword_str);
         index += codeword_str_len;
         free(codeword_str);
