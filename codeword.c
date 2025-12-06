@@ -1,6 +1,7 @@
 #include "codeword.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <string.h>
 
 static const size_t BITS_IN_BYTE = 8;
 static const uint32_t LSBYTE_MASK = 0xFF;
@@ -66,10 +67,14 @@ uint8_t* codeword_get_bytes(
 )
 {
     ABORT_ON(codeword == NULL);
-
-    const size_t num_bytes = codeword_number_of_bytes(codeword);
-    uint8_t* const bytes = malloc(num_bytes);
+   
+    size_t num_bytes = codeword_number_of_bytes(codeword->length);
+    uint8_t* bytes = malloc(num_bytes);
     ABORT_ON(bytes == NULL);
+
+    memset(bytes,
+           0, 
+           num_bytes);
 
     uint32_t bits = codeword->bits;
 

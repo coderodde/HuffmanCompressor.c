@@ -80,15 +80,15 @@ static void byte_array_header_writer_write_code_table(
     size_t current_byte_index = 2 * sizeof(size_t);
 
     for (size_t byte = 0; byte < CODE_TABLE_CAPACITY; ++byte) {
-        const Codeword *const codeword = codetable_get(writer->table, (uint8_t) byte);
+        Codeword* codeword = codetable_get(writer->table, (uint8_t) byte);
         
         if (codeword != NULL) {
             writer->output_data[current_byte_index++] = (uint8_t) byte;
             writer->output_data[current_byte_index++] = (uint8_t) 
                                                         (codeword->length);
             
-            const size_t num_codeword_bytes = codeword_number_of_bytes(codeword);
-            uint8_t* const codeword_bytes   = codeword_get_bytes(codeword);
+            size_t num_codeword_bytes = codeword_number_of_bytes(codeword->length);
+            uint8_t* codeword_bytes   = codeword_get_bytes(codeword);
 
             memcpy(&writer->output_data[current_byte_index],
                    codeword_bytes, 

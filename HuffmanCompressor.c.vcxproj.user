@@ -6,8 +6,8 @@
     <LocalDebuggerCommandArgumentsHistory>-d text.huf text|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-c C:\Users\rodio\abcb.tex C:\Users\rodio\abcb.tex.huf</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArgumentsHistory>-d text.huf text|-d C:\Users\rodio\text.huf text.dcmp|-d C:\Users\rodio\abcb.tex.huf C:\Users\rodio\abcb.tex.dcmp|-c C:\Users\rodio\abcb.tex C:\Users\rodio\abcb.tex.huf|</LocalDebuggerCommandArgumentsHistory>
+    <LocalDebuggerCommandArgumentsHistory>-d text.huf text|-d C:\Users\rodio\text.huf text.dcmp|-d C:\Users\rodio\abcb.tex.huf C:\Users\rodio\abcb.tex.dcmp|-c C:\Users\rodio\abcb.tex C:\Users\rodio\abcb.tex.huf|-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
 </Project>

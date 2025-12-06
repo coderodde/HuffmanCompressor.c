@@ -107,7 +107,5 @@ char* extract_file_name_only(
         }
     }
 
-    ABORT_ON(i < 0)
-    return NULL; // Make the compiler happy by returning anything.
-                 // This is an unreachable statement.
+    return path_name; // No path separator found.
 }
