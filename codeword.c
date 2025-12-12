@@ -88,7 +88,7 @@ uint8_t* codeword_get_bytes(
 
 bool codeword_prepend_bit(
     Codeword* codeword, 
-    bool bit
+    bool      bit
 )
 {
     ABORT_ON(codeword == NULL);
@@ -112,7 +112,7 @@ size_t codeword_length(
 
 bool codeword_get_bit(
     Codeword* codeword,
-    size_t index
+    size_t    index
 )
 {
     ABORT_ON(codeword == NULL);
@@ -125,7 +125,7 @@ bool codeword_get_bit(
 
 void codeword_set_bit(
     Codeword* codeword, 
-    size_t index
+    size_t    index
 )
 {
     ABORT_ON(codeword == NULL);

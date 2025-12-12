@@ -21,7 +21,7 @@ BitWriter;
 
 static void bit_writer_init(
     BitWriter* bw, 
-    FILE* file
+    FILE*      file
 )
 {
     *bw = (BitWriter){
@@ -57,8 +57,8 @@ static void bit_writer_flush(
 // Write 'nbits' least significant bits of 'code' into the stream.
 static void bit_writer_put_bits(
     BitWriter* bw, 
-    uint32_t code, 
-    size_t nbits
+    uint32_t   code, 
+    size_t     nbits
 )
 {
     while (nbits--) {
