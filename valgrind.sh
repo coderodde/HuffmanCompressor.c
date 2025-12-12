@@ -5,5 +5,5 @@ valgrind --tool=memcheck \
   --track-origins=yes \
   --num-callers=50 \
   --error-exitcode=42 \
-  ./huffc -c huffc huffc.huf
+  ./huffc -d huffc.huf huffc.dcmp
 

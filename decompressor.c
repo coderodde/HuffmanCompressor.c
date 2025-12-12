@@ -286,4 +286,6 @@ void decompress(
     fclose(out);
     free(input_buffer);
     free(output_buffer);
+    codetable_free(ct);
+    free(ct);
 }
