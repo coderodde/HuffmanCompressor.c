@@ -48,9 +48,6 @@
     <ClCompile Include="byte_array_header_reader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="byte_array_compressed_data_writer.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="compressor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -87,9 +84,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="byte_array_header_reader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="byte_array_compressed_data_writer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="compressor.h">

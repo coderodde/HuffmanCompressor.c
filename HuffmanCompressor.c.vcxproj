@@ -147,7 +147,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="byte_array_compressed_data_writer.c" />
     <ClCompile Include="byte_array_header_reader.c" />
     <ClCompile Include="byte_array_header_writer.c" />
     <ClCompile Include="codetable.c" />
@@ -163,7 +162,6 @@
     <ClCompile Include="weighted_bytet_list.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="byte_array_compressed_data_writer.h" />
     <ClInclude Include="byte_array_header_reader.h" />
     <ClInclude Include="byte_array_header_writer.h" />
     <ClInclude Include="codetable_builder.h" />
