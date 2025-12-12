@@ -27,9 +27,11 @@ int main(int argc, char* argv[])
 
         infof("Compressing file '%s' to '%s'.", input_file, output_file);
 
+        size_t ta = get_ms();
         compress(input_file, output_file);
+        size_t tb = get_ms();
 
-        infof("Compression completed.");
+        infof("Compression completed in %zu ms.", tb - ta);
 
     } else if (strcmp(mode, "-d") == 0) {
         char* input_file  = argv[2];
@@ -37,11 +39,12 @@ int main(int argc, char* argv[])
 
         infof("Decompressing file '%s' to '%s'.", input_file, output_file);
         
+        size_t ta = get_ms();
         decompress(input_file, output_file);
+        size_t tb = get_ms();
 
-        infof("Decompression completed.");
-    }
-    else {
+        infof("Decompression completed in %zu ms.");
+    } else {
         printf("Unknown mode '%s'. Use 'c' for compression and 'd' for decompression.\n", mode);
         return EXIT_FAILURE;
     }
