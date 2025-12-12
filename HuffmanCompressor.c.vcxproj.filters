@@ -74,7 +74,7 @@
     <ClInclude Include="pqueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="weighted_byte_list..h">
+    <ClInclude Include="weighted_byte_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="codetable_builder.h">

@@ -110,9 +110,6 @@ void compress(
     CodeTable* code_table = codetable_builder_build(fd);
     ABORT_ON(code_table == NULL);
 
-    // TODO: remove this later!
-    puts(codetable_to_string(code_table));
-
     size_t code_table_size = codetable_size(code_table);
     size_t header_length =
         byte_array_header_writer_get_header_length(code_table_size);

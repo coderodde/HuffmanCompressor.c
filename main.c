@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
         decompress(input_file, output_file);
         size_t tb = get_ms();
 
-        infof("Decompression completed in %zu ms.");
+        infof("Decompression completed in %zu ms.", tb - ta);
     } else {
         printf("Unknown mode '%s'. Use 'c' for compression and 'd' for decompression.\n", mode);
         return EXIT_FAILURE;

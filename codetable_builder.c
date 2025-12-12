@@ -2,6 +2,7 @@
 #include "codeword.h"
 #include "pqueue.h"
 #include "utils.h"
+#include "weighted_byte_list.h"
 
 #define CODETABLE_CAPACITY 256
 
@@ -69,7 +70,7 @@ CodeTable* codetable_builder_build(
             codeword_prepend_bit(codeword, false);
         }
 
-        weighted_bytelist_append_all(left, right);
+        weighted_bytelist_merge(left, right);
         weighted_bytelist_free(right);
         priority_queue_insert(&pq, left);
     }

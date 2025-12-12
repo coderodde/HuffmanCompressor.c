@@ -1,7 +1,7 @@
 #ifndef IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_PRIORITY_QUEUE_H
 #define IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_PRIORITY_QUEUE_H
 
-#include "weighted_byte_list..h"
+#include "weighted_byte_list.h"
 #include <stdlib.h>
 
 typedef struct PriorityQueue {

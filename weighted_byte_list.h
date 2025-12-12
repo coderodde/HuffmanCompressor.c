@@ -40,4 +40,9 @@ size_t weighted_bytelist_total_weight(
     WeightedByteList* list
 );
 
+void weighted_bytelist_merge(
+    WeightedByteList* dest,
+    WeightedByteList* src
+);
+
 #endif // IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_WEIGHTED_BYTE_LIST_H

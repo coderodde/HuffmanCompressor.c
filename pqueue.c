@@ -1,6 +1,6 @@
 #include "pqueue.h"
 #include "utils.h"
-#include "weighted_byte_list..h"
+#include "weighted_byte_list.h"
 #include <stdlib.h>
 
 #define PRIORITY_QUEUE_TABLE_CAPACITY 256

@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "weighted_byte_list..h"
+#include "weighted_byte_list.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -25,12 +25,11 @@ void weighted_bytelist_append(
     list->data[list->size++] = byte;
 }
 
-void weighted_bytelist_append_all(
+void weighted_bytelist_merge(
     WeightedByteList* target_list,
     WeightedByteList* source_list
 )
 {
-
     ABORT_ON(target_list == NULL);
     ABORT_ON(source_list == NULL);
 

@@ -167,7 +167,7 @@
     <ClInclude Include="codetable_builder.h" />
     <ClInclude Include="compressor.h" />
     <ClInclude Include="decompressor.h" />
-    <ClInclude Include="weighted_byte_list..h" />
+    <ClInclude Include="weighted_byte_list.h" />
     <ClInclude Include="codetable.h" />
     <ClInclude Include="codeword.h" />
     <ClInclude Include="frequency_distribution.h" />
