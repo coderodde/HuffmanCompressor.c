@@ -49,6 +49,7 @@ void weighted_bytelist_free(
     ABORT_ON(list->data == NULL);
 
     free(list->data);
+    free(list);
 }
 
 uint8_t weighted_bytelist_get(

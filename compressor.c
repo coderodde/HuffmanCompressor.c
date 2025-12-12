@@ -177,6 +177,7 @@ void compress(
 
     free(header_writer);
     free(header_byte_array);
+    codetable_free(code_table);
     free(code_table);
     free(fd);
 }

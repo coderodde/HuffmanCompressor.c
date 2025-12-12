@@ -24,6 +24,17 @@ void codetable_init(
     }
 }
 
+void codetable_free(
+    CodeTable* code_table
+) 
+{
+	ABORT_ON(code_table == NULL)
+	
+	for (size_t i = 0; i < CODE_TABLE_CAPACITY; ++i) {
+		free(code_table->table[i]);
+	}
+}
+
 void codetable_put(
     CodeTable* table,
     uint8_t    byte,

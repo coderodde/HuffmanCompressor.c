@@ -18,6 +18,10 @@ void codetable_init(
     CodeTable* table
 );
 
+void codetable_free(
+    CodeTable* table
+);
+
 void codetable_put(
     CodeTable* table,
     uint8_t byte,

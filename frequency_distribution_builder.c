@@ -52,5 +52,6 @@ FrequencyDistribution* frequency_distribution_builder_build(
     }
 
     fclose(file);
+    free(buffer);
     return distribution;
 }
