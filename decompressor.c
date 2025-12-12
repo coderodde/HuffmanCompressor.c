@@ -6,6 +6,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
+
+#if defined(_WIN32)
+	typedef ptrdiff_t ssize_t;
+#else
+#include <sys/types.h>
+#endif
 
 static const size_t BUFFER_SIZE = 1024 * 64;
 static const size_t HEADER_MAX_SIZE  = 16 + 256 * 6;
@@ -67,7 +74,7 @@ static void decoder_tree_insert(
     DecoderTreeNode* node = tree->root;
     size_t length = codeword_length(codeword);
 
-    SSIZE_T current_index = (SSIZE_T) length - 1;
+    ssize_t current_index = (ssize_t) length - 1;
 
     for (; current_index >= 0; --current_index) {
 

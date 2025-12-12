@@ -1,8 +1,15 @@
+#define _POSIX_C_SOURCE 200809L
 #include "utils.h"
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#if defined(_WIN32)
+typedef ptrdiff_t ssize_t;
+#else
+#include <sys/types.h>
+#endif
 
 void errorf(
     char* fmt, 
@@ -69,6 +76,7 @@ size_t get_file_length_by_name(
     return (size_t)pos;
 
 #else
+#include <sys/types.h>
     // POSIX: fseeko / ftello (64-bit)
     if (fseeko(f, 0, SEEK_END) != 0) {
         fclose(f);
@@ -86,9 +94,15 @@ size_t get_file_length_by_name(
 
 size_t get_ms() {
 #ifdef _WIN32
+#include <windows.h>
     return (size_t) GetTickCount64();
 #else
-    return 0;
+#include <time.h>
+	struct timespec ts;
+	clock_gettime(CLOCK_REALTIME, &ts);
+	
+	return (size_t) ts.tv_sec * 1000 + 
+                    ts.tv_nsec / 1000000;	
 #endif
 }
 
@@ -97,7 +111,7 @@ char* extract_file_name_only(
 )
 {
     const size_t len = strlen(path_name);
-    SSIZE_T i;
+    ssize_t i;
 
     for (i = len - 1; i >= 0; --i) {
         const char ch = path_name[i];
