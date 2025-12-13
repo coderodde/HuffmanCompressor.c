@@ -166,6 +166,9 @@ void decompress(
     uint8_t* output_buffer = malloc(BUFFER_SIZE);
     ABORT_ON(output_buffer == NULL)
 
+    ABORT_ON(setvbuf(out, output_buffer, _IOFBF, BUFFER_SIZE) != 0)
+    ABORT_ON(setvbuf(in,  input_buffer,  _IOFBF, BUFFER_SIZE) != 0);
+
     // Read the code table size and raw data length first:
     size_t bytes_read = fread(input_buffer, 1, 2 * sizeof(size_t), in);
 

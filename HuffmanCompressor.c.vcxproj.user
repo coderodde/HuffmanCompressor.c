@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-d C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.dcmp.html</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArgumentsHistory>-d text.huf text|-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|-d C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.dcmp.html|</LocalDebuggerCommandArgumentsHistory>
+    <LocalDebuggerCommandArgumentsHistory>-d text.huf text|-d C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.dcmp.html|-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-d C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.huf.html</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommandArgumentsHistory>-d text.huf text|-d C:\Users\rodio\text.huf text.dcmp|-d C:\Users\rodio\abcb.tex.huf C:\Users\rodio\abcb.tex.dcmp|-c C:\Users\rodio\abcb.tex C:\Users\rodio\abcb.tex.huf|-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
