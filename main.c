@@ -5,15 +5,18 @@
 #include "frequency_distribution.h"
 #include "frequency_distribution_bulder.h"
 #include "utils.h"
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+_Static_assert(sizeof(size_t) == 8, "Expected 64-bit size_t.");
+
 int main(int argc, char* argv[])
 {
     if (argc != 4) {
-        printf("Usage: %s <-c|-d> <INPUT_FILE> <OUTPUT_FILE>\n", 
+        printf("Usage: %s <-c|-d> INPUT_FILE OUTPUT_FILE\n", 
                extract_file_name_only(argv[0]));
 
         return EXIT_FAILURE;

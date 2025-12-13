@@ -4,10 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#if defined(_WIN32)
+#ifdef _WIN32
+#include <windows.h>
 typedef ptrdiff_t ssize_t;
 #else
+#include <time.h>
 #include <sys/types.h>
 #endif
 
@@ -92,17 +93,16 @@ size_t get_file_length_by_name(
 #endif
 }
 
-size_t get_ms() {
+size_t get_ms(void)
+{
 #ifdef _WIN32
-#include <windows.h>
-    return (size_t) GetTickCount64();
+    return (size_t)GetTickCount64();
 #else
-#include <time.h>
-	struct timespec ts;
-	clock_gettime(CLOCK_REALTIME, &ts);
-	
-	return (size_t) ts.tv_sec * 1000 + 
-                    ts.tv_nsec / 1000000;	
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+
+    return (size_t) ts.tv_sec * 1000 +
+           (size_t) ts.tv_nsec / 1000000;
 #endif
 }
 

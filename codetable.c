@@ -31,7 +31,9 @@ void codetable_free(
 	ABORT_ON(code_table == NULL)
 	
 	for (size_t i = 0; i < CODE_TABLE_CAPACITY; ++i) {
-		free(code_table->table[i]);
+        if (code_table->table[i] != NULL) {
+            free(code_table->table[i]);
+        }
 	}
 }
 

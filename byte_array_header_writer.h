@@ -2,12 +2,8 @@
 #define IO_GITHUB_CODERODDE_HUFFMAN_COMPRESSOR_C_BYTE_ARRAY_HEADER_WRITER_H
 
 #include "codetable.h"
-#include <stddef.h>
-
-_Static_assert(sizeof(size_t) == 8, "size_t must be 8 bytes long.");
-
-#include <stdint.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 typedef struct ByteArrayHeaderWriter {
     uint8_t*   output_data;

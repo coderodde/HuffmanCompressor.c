@@ -147,11 +147,13 @@ void compress(
     // 6. Now write the actual compressed codes, 64KiB at a time:
     FILE* in = fopen(input_file_name, "rb");
     ABORT_ON(in == NULL);
+    ABORT_ON(setvbuf(in, NULL, _IOFBF, BUFFER_SIZE) != 0);
 
     BitWriter bw;
     bit_writer_init(&bw, out);
 
-    uint8_t inbuf[BUFFER_SIZE];
+    uint8_t* inbuf = malloc(BUFFER_SIZE);
+    ABORT_ON(inbuf == NULL);
 
     for (;;) {
         size_t read = fread(inbuf, 1, sizeof inbuf, in);

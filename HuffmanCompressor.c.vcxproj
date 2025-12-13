@@ -120,6 +120,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
+      <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +141,7 @@
       <UseDynamicDebugging>false</UseDynamicDebugging>
       <TreatWarningAsError>false</TreatWarningAsError>
       <CompileAs>CompileAsC</CompileAs>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -159,7 +161,7 @@
     <ClCompile Include="main.c" />
     <ClCompile Include="pqueue.c" />
     <ClCompile Include="utils.c" />
-    <ClCompile Include="weighted_bytet_list.c" />
+    <ClCompile Include="weighted_byte_list.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="byte_array_header_reader.h" />

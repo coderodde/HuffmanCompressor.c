@@ -33,7 +33,7 @@
     <ClCompile Include="frequency_distribution_builder.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="weighted_bytet_list.c">
+    <ClCompile Include="weighted_byte_list.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pqueue.c">

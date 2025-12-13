@@ -181,6 +181,7 @@ void decompress(
 
     CodeTable* ct = malloc(sizeof *ct);
     ABORT_ON(ct == NULL);
+    codetable_init(ct);
 
     DecoderTree tree;
     decoder_tree_init(&tree);
