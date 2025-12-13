@@ -18,7 +18,8 @@ int main(int argc, char* argv[])
     if (argc != 4) {
         printf("Usage: %s <-c|-d> INPUT_FILE OUTPUT_FILE\n", 
                extract_file_name_only(argv[0]));
-
+		puts("              -c for compressing,");
+		puts("              -d for decompressing.");
         return EXIT_FAILURE;
     }
 
