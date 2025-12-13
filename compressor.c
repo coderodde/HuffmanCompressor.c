@@ -177,6 +177,7 @@ void compress(
     fclose(in);
     fclose(out);
 
+	free(inbuf);
     free(header_writer);
     free(header_byte_array);
     codetable_free(code_table);
