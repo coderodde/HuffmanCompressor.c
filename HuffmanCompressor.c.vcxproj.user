@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-c text text.huf</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArgumentsHistory>-d text.huf text|-d C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.dcmp.html|-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|</LocalDebuggerCommandArgumentsHistory>
+    <LocalDebuggerCommandArgumentsHistory>-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|-d C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.huf.html|-c C:\Users\rodio\Documents\acbc.txt C:\Users\rodio\Documents\acbc.txt.huf|-d C:\Users\rodio\Documents\acbc.txt.huf C:\Users\rodio\Documents\acbc.dcmp|-c text text.huf|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-d  C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.dcmp.html</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArgumentsHistory>-d text.huf text|-d C:\Users\rodio\text.huf text.dcmp|-d C:\Users\rodio\abcb.tex.huf C:\Users\rodio\abcb.tex.dcmp|-c C:\Users\rodio\abcb.tex C:\Users\rodio\abcb.tex.huf|-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|</LocalDebuggerCommandArgumentsHistory>
+    <LocalDebuggerCommandArgumentsHistory>-c C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|-c text text.huf|-d text.huf text.dcmp|-c  C:\Users\rodio\Documents\WarAndPeace.html C:\Users\rodio\Documents\WarAndPeace.huf|-d  C:\Users\rodio\Documents\WarAndPeace.huf C:\Users\rodio\Documents\WarAndPeace.dcmp.html|</LocalDebuggerCommandArgumentsHistory>
+    <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
   </PropertyGroup>
 </Project>

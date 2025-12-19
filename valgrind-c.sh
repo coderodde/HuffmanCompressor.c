@@ -6,5 +6,5 @@ valgrind --tool=memcheck \
   --num-callers=50 \
   --error-exitcode=42 \
   -s \
-  ./huffc -d huffc.huf2 huffc2
+  ./huffc -c huffc huffc.huf
 
