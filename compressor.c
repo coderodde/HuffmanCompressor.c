@@ -118,9 +118,6 @@ void compress(
     FILE* out = fopen(output_file_name, "wb");
     ABORT_ON(out == NULL);
 
-    // Optional: stdio buffer, separate from our 64KiB bit buffer
-    ABORT_ON(setvbuf(out, NULL, _IOFBF, BUFFER_SIZE) != 0);
-
     // 4. Prepare header
     uint8_t* header_byte_array = malloc(header_length);
     ABORT_ON(header_byte_array == NULL);
@@ -146,9 +143,8 @@ void compress(
 
     // 6. Now write the actual compressed codes, 64KiB at a time:
     FILE* in = fopen(input_file_name, "rb");
-    ABORT_ON(in == NULL);
-    ABORT_ON(setvbuf(in, NULL, _IOFBF, BUFFER_SIZE) != 0);
-
+    ABORT_ON(in == NULL)
+    
     BitWriter bw;
     bit_writer_init(&bw, out);
 
@@ -156,7 +152,11 @@ void compress(
     ABORT_ON(inbuf == NULL);
 
     for (;;) {
-        size_t read = fread(inbuf, 1, sizeof inbuf, in);
+        size_t read = fread(inbuf,
+                            1, 
+                            BUFFER_SIZE, 
+                            in);
+
         if (read == 0) {
             ABORT_ON(ferror(in));   // error?
             break;                  // EOF
