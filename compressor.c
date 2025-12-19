@@ -25,10 +25,10 @@ static void bit_writer_init(
 )
 {
     *bw = (BitWriter){
-        .file = file,
+        .file     = file,
         .byte_pos = 0,
-        .bit_pos = 0,
-        .buffer = malloc(BUFFER_SIZE),
+        .bit_pos  = 0,
+        .buffer   = malloc(BUFFER_SIZE),
     };
 }
 
@@ -51,7 +51,7 @@ static void bit_writer_flush(
     ABORT_ON(written != bw->byte_pos);
 
     bw->byte_pos = 0;
-    bw->bit_pos = 0;
+    bw->bit_pos  = 0;
 }
 
 // Write 'nbits' least significant bits of 'code' into the stream.
@@ -111,8 +111,7 @@ void compress(
     ABORT_ON(code_table == NULL);
 
     size_t code_table_size = codetable_size(code_table);
-    size_t header_length =
-        byte_array_header_writer_get_header_length(code_table_size);
+    size_t header_length = byte_array_header_writer_get_header_length(code_table_size);
 
     // 3. Open OUTPUT file:
     FILE* out = fopen(output_file_name, "wb");
@@ -147,7 +146,6 @@ void compress(
     // 6. Now write the actual compressed codes, 64KiB at a time:
     FILE* in = fopen(input_file_name, "rb");
     ABORT_ON(in == NULL);
-    ABORT_ON(setvbuf(in, NULL, _IOFBF, BUFFER_SIZE) != 0);
 
     BitWriter bw;
     bit_writer_init(&bw, out);
@@ -156,7 +154,10 @@ void compress(
     ABORT_ON(inbuf == NULL);
 
     for (;;) {
-        size_t read = fread(inbuf, 1, sizeof inbuf, in);
+        size_t read = fread(inbuf, 
+                            1, 
+                            BUFFER_SIZE, 
+                            in);
         if (read == 0) {
             ABORT_ON(ferror(in));   // error?
             break;                  // EOF
